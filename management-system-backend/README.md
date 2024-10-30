@@ -12,14 +12,13 @@ This is a management system designed for NJUPT labs, built with Spring.
 - File structure in OSS:
 
 ```text
-labs
-|-- {labId}
-    |-- materials
-    |   |-- {fileName}
-    |-- solutions
-        |-- {solutionId}
-            |-- {fileName}
-
+labs/
+└── {labId}/
+    ├── materials/
+    │   └── {fileName}
+    └── solutions/
+        └── {studentId}/
+            └── {fileName}
 ```
 
 - Error / exception handling are done in the `GlobalExceptionHandler`.
