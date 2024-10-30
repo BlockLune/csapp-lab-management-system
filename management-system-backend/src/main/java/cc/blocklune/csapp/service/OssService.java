@@ -20,7 +20,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 @Service
 public class OssService {
@@ -57,11 +56,20 @@ public class OssService {
     }
   }
 
+  public void uploadFile(String objectName, InputStream inputStream) {
+    PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, objectName, inputStream);
+    ossClient.putObject(putObjectRequest);
+  }
+
+  public InputStream downloadFile(String objectName) {
+    OSSObject ossObject = ossClient.getObject(bucketName, objectName);
+    return ossObject.getObjectContent();
+  }
+
   public void uploadFile(String objectName, String filePath) {
     try {
       InputStream inputStream = new FileInputStream(filePath);
-      PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, objectName, inputStream);
-      ossClient.putObject(putObjectRequest);
+      uploadFile(objectName, inputStream);
       logger.info("File uploaded: {} -> {}", filePath, objectName);
     } catch (Exception e) {
       logger.error("Error occurred while uploading file: {}", objectName, e);
