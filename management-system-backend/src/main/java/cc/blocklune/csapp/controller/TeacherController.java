@@ -17,69 +17,55 @@ import cc.blocklune.csapp.dto.UploadResult;
 
 @Tag(name = "teacher", description = "The operations for teachers")
 @RestController
-@RequestMapping("/api/teachers")
+@RequestMapping("/api")
 public class TeacherController {
-    @Operation(summary = "Upload a file for a specific lab", responses = {
-            @ApiResponse(responseCode = "200", description = "The result of the upload"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized")
-    })
-    @PostMapping("/labs/{labId}")
-    public UploadResult uploadLabFile(@PathVariable Long labId, @RequestParam("file") MultipartFile file) {
-        // TODO: Implement
-        return new UploadResult(file.getOriginalFilename(), "https://example.com/file.pdf");
-    }
 
-    @Operation(summary = "Delete a file for a specific lab", responses = {
-            @ApiResponse(responseCode = "200", description = "The result of the deletion"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized")
-    })
-    @DeleteMapping("/labs/{labId}")
-    public void deleteLabFile(@PathVariable Long labId, @RequestParam("filename") String filename) {
-        // TODO: Implement
-    }
+  @GetMapping("/students")
+  public void getStudents() {
+    // TODO
+  }
 
-    @Operation(summary = "Get the list of students", responses = {
-            @ApiResponse(responseCode = "200", description = "The list of students"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized")
-    })
-    @GetMapping("/students")
-    public void getStudents() {
-        // TODO: Implement
-    }
+  @PostMapping("/students")
+  public void createStudent() {
+    // TODO
+  }
 
-    @Operation(summary = "Create a student account", responses = {
-            @ApiResponse(responseCode = "200", description = "The result of the creation"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized")
-    })
-    @PostMapping("/students")
-    public void createStudentAccount() {
-        // TODO: Implement
-    }
+  @PutMapping("/students/{studentId}")
+  public void updateStudent(@PathVariable Long studentId) {
+    // TODO
+  }
 
-    @Operation(summary = "Update a student account", responses = {
-            @ApiResponse(responseCode = "200", description = "The result of the update"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized")
-    })
-    @PutMapping("/students")
-    public void updateStudentAccount() {
-        // TODO: Implement
-    }
+  @DeleteMapping("/students/{studentId}")
+  public void deleteStudent(@PathVariable Long studentId) {
+    // TODO
+  }
 
-    @Operation(summary = "Delete a student account", responses = {
-            @ApiResponse(responseCode = "200", description = "The result of the deletion"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized")
-    })
-    @DeleteMapping("/students")
-    public void deleteStudentAccount() {
-        // TODO: Implement
-    }
+  @PostMapping("/teachers/labs/{labId}/materials")
+  public void uploadMaterial(
+      @PathVariable Long labId,
+      @RequestParam("file") MultipartFile file) {
+    // TODO
+  }
 
-    @Operation(summary = "Get the list of solutions for a specific lab", responses = {
-            @ApiResponse(responseCode = "200", description = "The list of solutions"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized")
-    })
-    @GetMapping("/students/{studentId}/labs/{labId}")
-    public void getStudentSolutionList(@PathVariable Long studentId, @PathVariable Long labId) {
-        // TODO: Implement
-    }
+  @DeleteMapping("/teachers/labs/{labId}/materials/{fileName}")
+  public void deleteMaterialFile(
+      @PathVariable Long labId,
+      @PathVariable String fileName) {
+    // TODO
+  }
+
+  @GetMapping("/teachers/labs/{labId}/solutions/{studentId}")
+  public void getSolution(
+      @PathVariable Long labId,
+      @PathVariable Long studentId) {
+    // TODO
+  }
+
+  @GetMapping("/teachers/labs/{labId}/solutions/{studentId}/{fileName}")
+  public void getSolutionFile(
+      @PathVariable Long labId,
+      @PathVariable Long studentId,
+      @PathVariable String fileName) {
+    // TODO
+  }
 }

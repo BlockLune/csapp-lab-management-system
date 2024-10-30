@@ -27,11 +27,12 @@ public class StudentController {
     this.ossService = ossService;
   }
 
-  @Operation(summary = "Upload a file for a specific lab", responses = {
-      @ApiResponse(responseCode = "200", description = "The result of the upload"),
+  @Operation(summary = "Upload a solution file for a specific lab", responses = {
+      @ApiResponse(responseCode = "201", description = "The file has been uploaded successfully"),
+      @ApiResponse(responseCode = "400", description = "Bad request"),
       @ApiResponse(responseCode = "401", description = "Unauthorized")
   })
-  @PostMapping(value = "/labs/{labId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+  @PostMapping(value = "/labs/{labId}/solutions", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   public ResponseEntity<String> uploadSolution(
       @PathVariable Long labId,
       @RequestParam("file") MultipartFile file) {
@@ -51,21 +52,24 @@ public class StudentController {
     }
   }
 
-  @Operation(summary = "Get the names of the uploaded files for a specific lab", responses = {
-      @ApiResponse(responseCode = "200", description = "The names of the uploaded files"),
+
+  @Operation(summary = "Download a list of solution files for a specific lab", responses = {
+      @ApiResponse(responseCode = "200", description = "The file has been downloaded successfully"),
       @ApiResponse(responseCode = "401", description = "Unauthorized")
   })
-  @GetMapping("/labs/{labId}")
-  public void getSolutions(@PathVariable Long labId) {
-    // TODO: Implement
+  @GetMapping("/labs/{labId}/solutions")
+  public void downloadSolution(@PathVariable Long labId) {
   }
 
-  @Operation(summary = "Remove a file of a solution for a specific lab", responses = {
-      @ApiResponse(responseCode = "200", description = "The result of the removal"),
+  @Operation(summary = "Download a solution file for a specific lab", responses = {
+      @ApiResponse(responseCode = "200", description = "The file has been downloaded successfully"),
       @ApiResponse(responseCode = "401", description = "Unauthorized")
   })
-  @DeleteMapping("/labs/{labId}/{filename}")
-  public void removeSolution(@PathVariable Long labId, @PathVariable String filename) {
-    // TODO: Implement
+  @GetMapping("/labs/{labId}/solutions/{fileName}")
+  public void downloadSolutionFile(@PathVariable Long labId, @PathVariable String fileName) {
+  }
+
+  @DeleteMapping("/labs/{labId}/solutions/{fileName}")
+  public void deleteSolutionFile(@PathVariable Long labId, @PathVariable String fileName) {
   }
 }
