@@ -17,7 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/api")
 public class TeacherController {
-
   @Operation(summary = "Get a list of students", responses = {
       @ApiResponse(responseCode = "200", description = "Get students successfully"),
       @ApiResponse(responseCode = "401", description = "Unauthorized")
