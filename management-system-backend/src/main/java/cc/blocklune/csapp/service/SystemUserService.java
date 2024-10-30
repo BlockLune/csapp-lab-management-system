@@ -5,6 +5,7 @@ import cc.blocklune.csapp.repository.SystemUserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class SystemUserService {
@@ -39,5 +40,12 @@ public class SystemUserService {
   public void deleteStudent(String username) {
     systemUserRepository.findByUsername(username)
         .ifPresent(systemUserRepository::delete);
+  }
+
+  public Set<String> getStudentNameList() {
+    Set<SystemUser> students = systemUserRepository.findByRole("STUDENT");
+    return students.stream()
+        .map(SystemUser::getUsername)
+        .collect(Collectors.toSet());
   }
 }

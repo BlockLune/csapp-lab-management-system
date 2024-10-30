@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import com.aliyun.oss.OSSException;
 
@@ -27,6 +28,11 @@ public class GlobalExceptionHandler {
   public ResponseEntity<String> handleMaxUploadSizeExceeded(MaxUploadSizeExceededException ex) {
     return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE)
         .body(ex.getMessage());
+  }
+
+  @ExceptionHandler(NoResourceFoundException.class)
+  public ResponseEntity<String> handleNoResourceFoundException(NoResourceFoundException ex) {
+    return ResponseEntity.notFound().build();
   }
 
   @ExceptionHandler(OSSException.class)

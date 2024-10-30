@@ -1,5 +1,6 @@
 package cc.blocklune.csapp.controller;
 
+import cc.blocklune.csapp.service.SystemUserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -12,18 +13,29 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+
+import java.util.Set;
 
 @Tag(name = "teacher", description = "The operations for teachers")
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/teachers")
 public class TeacherController {
+  private final SystemUserService systemUserService;
+
+  public TeacherController(SystemUserService systemUserService) {
+    this.systemUserService = systemUserService;
+  }
+
   @Operation(summary = "Get a list of students", responses = {
       @ApiResponse(responseCode = "200", description = "Get students successfully"),
       @ApiResponse(responseCode = "401", description = "Unauthorized")
   })
   @GetMapping("/students")
-  public void getStudents() {
-    // TODO
+  @PreAuthorize("hasRole('TEACHER')")
+  public ResponseEntity<Set<String>> getStudents() {
+    return ResponseEntity.ok(systemUserService.getStudentNameList());
   }
 
   @Operation(summary = "Get a student", responses = {
@@ -32,7 +44,6 @@ public class TeacherController {
   })
   @PostMapping("/students")
   public void createStudent() {
-    // TODO
   }
 
   @Operation(summary = "Update a student", responses = {
@@ -57,7 +68,7 @@ public class TeacherController {
       @ApiResponse(responseCode = "201", description = "Upload material successfully"),
       @ApiResponse(responseCode = "401", description = "Unauthorized")
   })
-  @PostMapping("/teachers/labs/{labId}/materials")
+  @PostMapping("/labs/{labId}/materials")
   public void uploadMaterial(
       @PathVariable Long labId,
       @RequestParam("file") MultipartFile file) {
@@ -68,7 +79,7 @@ public class TeacherController {
       @ApiResponse(responseCode = "200", description = "Delete material successfully"),
       @ApiResponse(responseCode = "401", description = "Unauthorized")
   })
-  @DeleteMapping("/teachers/labs/{labId}/materials/{fileName}")
+  @DeleteMapping("/labs/{labId}/materials/{fileName}")
   public void deleteMaterialFile(
       @PathVariable Long labId,
       @PathVariable String fileName) {
@@ -79,7 +90,7 @@ public class TeacherController {
       @ApiResponse(responseCode = "200", description = "Get solutions successfully"),
       @ApiResponse(responseCode = "401", description = "Unauthorized")
   })
-  @GetMapping("/teachers/labs/{labId}/solutions/{studentId}")
+  @GetMapping("/labs/{labId}/solutions/{studentId}")
   public void getSolution(
       @PathVariable Long labId,
       @PathVariable Long studentId) {
@@ -90,7 +101,7 @@ public class TeacherController {
       @ApiResponse(responseCode = "200", description = "Get solution file successfully"),
       @ApiResponse(responseCode = "401", description = "Unauthorized")
   })
-  @GetMapping("/teachers/labs/{labId}/solutions/{studentId}/{fileName}")
+  @GetMapping("/labs/{labId}/solutions/{studentId}/{fileName}")
   public void getSolutionFile(
       @PathVariable Long labId,
       @PathVariable Long studentId,

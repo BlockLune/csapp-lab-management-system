@@ -47,7 +47,9 @@ public class JwtSecurityConfiguration {
         .userDetailsService(userDetailsService)
         .authorizeHttpRequests(auth -> auth
             .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
-            .requestMatchers("/api/auth/login").authenticated()
+            .requestMatchers("/api/public/**").permitAll()
+            .requestMatchers("/api/teachers/**").hasRole("TEACHER")
+            .requestMatchers("/api/students/**").hasRole("STUDENT")
             .anyRequest().authenticated())
         .httpBasic(basic -> basic.authenticationEntryPoint(basicAuthenticationEntryPoint()))
         .oauth2ResourceServer(oauth2 -> oauth2
