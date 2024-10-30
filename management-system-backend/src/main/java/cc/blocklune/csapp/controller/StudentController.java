@@ -52,7 +52,6 @@ public class StudentController {
     }
   }
 
-
   @Operation(summary = "Download a list of solution files for a specific lab", responses = {
       @ApiResponse(responseCode = "200", description = "The file has been downloaded successfully"),
       @ApiResponse(responseCode = "401", description = "Unauthorized")
@@ -69,6 +68,10 @@ public class StudentController {
   public void downloadSolutionFile(@PathVariable Long labId, @PathVariable String fileName) {
   }
 
+  @Operation(summary = "Delete a solution file for a specific lab", responses = {
+      @ApiResponse(responseCode = "200", description = "The file has been deleted successfully"),
+      @ApiResponse(responseCode = "401", description = "Unauthorized")
+  })
   @DeleteMapping("/labs/{labId}/solutions/{fileName}")
   public void deleteSolutionFile(@PathVariable Long labId, @PathVariable String fileName) {
   }
