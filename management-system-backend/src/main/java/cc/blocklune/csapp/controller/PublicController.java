@@ -1,13 +1,13 @@
 package cc.blocklune.csapp.controller;
 
+import cc.blocklune.csapp.model.LabInfo;
 import cc.blocklune.csapp.service.OssService;
+import cc.blocklune.csapp.repository.LabInfoRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-
 import java.io.InputStream;
 import java.util.List;
-
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -22,9 +22,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/public")
 public class PublicController {
   private OssService ossService;
+  private LabInfoRepository labInfoRepository;
 
-  public PublicController(OssService ossService) {
+  public PublicController(OssService ossService, LabInfoRepository labInfoRepository) {
     this.ossService = ossService;
+    this.labInfoRepository = labInfoRepository;
   }
 
   @Operation(summary = "Say hello", responses = {
@@ -41,8 +43,8 @@ public class PublicController {
       @ApiResponse(responseCode = "401", description = "Unauthorized")
   })
   @GetMapping("/labs")
-  public void getLabs() {
-    // TODO
+  public ResponseEntity<List<LabInfo>> getLabs() {
+    return ResponseEntity.ok(labInfoRepository.findAll());
   }
 
   @Operation(summary = "Get materials of a specific lab", responses = {
