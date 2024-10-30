@@ -19,13 +19,13 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
   public ResponseEntity<String> handleMediaTypeNotSupported(HttpMediaTypeNotSupportedException ex) {
     return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
-        .body("Unsupported Media Type: " + ex.getMessage());
+        .body(ex.getMessage());
   }
 
   @ExceptionHandler(MaxUploadSizeExceededException.class)
   public ResponseEntity<String> handleMaxUploadSizeExceeded(MaxUploadSizeExceededException ex) {
     return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE)
-        .body("Maximum upload size exceeded: " + ex.getMessage());
+        .body(ex.getMessage());
   }
 
   @ExceptionHandler(Exception.class)
