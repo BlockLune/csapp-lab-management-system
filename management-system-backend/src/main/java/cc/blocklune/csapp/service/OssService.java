@@ -1,7 +1,6 @@
 package cc.blocklune.csapp.service;
 
 import java.util.List;
-import java.util.ArrayList;
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
 import com.aliyun.oss.common.auth.CredentialsProviderFactory;
@@ -64,13 +63,12 @@ public class OssService {
   }
 
   public List<String> listFiles(String keyPrefix) {
-    try {
-      ListObjectsV2Result result = ossClient.listObjectsV2(bucketName, keyPrefix);
-      List<OSSObjectSummary> ossObjectSummaries = result.getObjectSummaries();
-      return ossObjectSummaries.stream().map(OSSObjectSummary::getKey).toList();
-    } catch (Exception e) {
-      logger.error("Error occurred while listing files: {}", keyPrefix, e);
-      return new ArrayList<String>();
-    }
+    ListObjectsV2Result result = ossClient.listObjectsV2(bucketName, keyPrefix);
+    List<OSSObjectSummary> ossObjectSummaries = result.getObjectSummaries();
+    return ossObjectSummaries.stream().map(OSSObjectSummary::getKey).toList();
+  }
+
+  public void deleteFile(String objectName) {
+    ossClient.deleteObject(bucketName, objectName);
   }
 }

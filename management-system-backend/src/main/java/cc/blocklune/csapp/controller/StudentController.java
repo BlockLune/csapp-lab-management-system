@@ -4,12 +4,16 @@ import cc.blocklune.csapp.service.OssService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+
+import java.io.InputStream;
 import java.net.URI;
 import java.util.List;
+
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,9 +50,7 @@ public class StudentController {
       return ResponseEntity.badRequest().body("File is empty");
     }
 
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    String studentId = authentication.getName();
-
+    String studentId = SecurityContextHolder.getContext().getAuthentication().getName();
     String[] objectNameParts = { "labs", labId.toString(), "solutions", studentId, file.getOriginalFilename() };
     String objectName = String.join("/", objectNameParts);
 
@@ -82,7 +84,19 @@ public class StudentController {
   })
   @PreAuthorize("hasRole('STUDENT')")
   @GetMapping("/labs/{labId}/solutions/{fileName}")
-  public void downloadSolutionFile(@PathVariable Long labId, @PathVariable String fileName) {
+  public ResponseEntity<InputStreamResource> downloadSolutionFile(@PathVariable Long labId,
+      @PathVariable String fileName) {
+    String studentId = SecurityContextHolder.getContext().getAuthentication().getName();
+    String[] objectNameParts = { "labs", labId.toString(), "solutions", studentId, fileName };
+    String objectName = String.join("/", objectNameParts);
+    InputStream inputStream = ossService.downloadFile(objectName);
+
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+    headers.setContentDispositionFormData("attachment", fileName);
+
+    InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+    return ResponseEntity.ok().headers(headers).body(inputStreamResource);
   }
 
   @Operation(summary = "Delete a solution file for a specific lab", responses = {
@@ -92,5 +106,9 @@ public class StudentController {
   @PreAuthorize("hasRole('STUDENT')")
   @DeleteMapping("/labs/{labId}/solutions/{fileName}")
   public void deleteSolutionFile(@PathVariable Long labId, @PathVariable String fileName) {
+    String studentId = SecurityContextHolder.getContext().getAuthentication().getName();
+    String[] objectNameParts = { "labs", labId.toString(), "solutions", studentId, fileName };
+    String objectName = String.join("/", objectNameParts);
+    ossService.deleteFile(objectName);
   }
 }

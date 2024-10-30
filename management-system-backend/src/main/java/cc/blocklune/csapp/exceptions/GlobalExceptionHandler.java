@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
+import com.aliyun.oss.OSSException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -28,9 +29,18 @@ public class GlobalExceptionHandler {
         .body(ex.getMessage());
   }
 
+  @ExceptionHandler(OSSException.class)
+  public ResponseEntity<String> handleOssException(OSSException ex) {
+    if (ex.getErrorCode().equals("NoSuchKey")) {
+      return ResponseEntity.notFound().build();
+    }
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .body(ex.getMessage());
+  }
+
   @ExceptionHandler(Exception.class)
   public ResponseEntity<String> handleGenericException(Exception ex) {
     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-        .body("An internal server error occurred");
+        .body("Unkown error");
   }
 }
