@@ -4,8 +4,10 @@ import cc.blocklune.csapp.service.OssService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.net.URI;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @Tag(name = "student", description = "The operations for students")
 @RestController
@@ -32,6 +35,7 @@ public class StudentController {
       @ApiResponse(responseCode = "400", description = "Bad request"),
       @ApiResponse(responseCode = "401", description = "Unauthorized")
   })
+  @PreAuthorize("hasRole('STUDENT')")
   @PostMapping(value = "/labs/{labId}/solutions", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   public ResponseEntity<String> uploadSolution(
       @PathVariable Long labId,
@@ -41,12 +45,14 @@ public class StudentController {
     }
 
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    String name = authentication.getName();
-    String objectName = "STUDENT" + "_" + name + "_" + labId + file.getOriginalFilename();
+    String studentId = authentication.getName();
+    String[] objectNameParts = { "labs", labId.toString(), "solutions", studentId, file.getOriginalFilename() };
+    String objectName = String.join("/", objectNameParts);
     try {
       ossService.uploadFile(objectName, file.getInputStream());
-      // TODO: Use Created (URL needed)
-      return ResponseEntity.noContent().build();
+      URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+          .path("/{fileName}").buildAndExpand(objectName).toUri();
+      return ResponseEntity.created(location).build();
     } catch (Exception e) {
       return ResponseEntity.badRequest().body("Failed to read the file's content.");
     }
