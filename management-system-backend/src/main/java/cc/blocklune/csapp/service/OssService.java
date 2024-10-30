@@ -1,21 +1,18 @@
 package cc.blocklune.csapp.service;
 
-import com.aliyun.oss.ClientException;
+import java.util.List;
+import java.util.ArrayList;
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
-import com.aliyun.oss.OSSException;
 import com.aliyun.oss.common.auth.CredentialsProviderFactory;
 import com.aliyun.oss.common.auth.EnvironmentVariableCredentialsProvider;
-import com.aliyun.oss.model.GetObjectRequest;
 import com.aliyun.oss.model.OSSObject;
 import com.aliyun.oss.model.PutObjectRequest;
-import com.aliyun.oss.model.PutObjectResult;
+import com.aliyun.oss.model.ListObjectsV2Result;
+import com.aliyun.oss.model.OSSObjectSummary;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
-import java.io.OutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -66,22 +63,14 @@ public class OssService {
     return ossObject.getObjectContent();
   }
 
-  public void uploadFile(String objectName, String filePath) {
+  public List<String> listFiles(String keyPrefix) {
     try {
-      InputStream inputStream = new FileInputStream(filePath);
-      uploadFile(objectName, inputStream);
-      logger.info("File uploaded: {} -> {}", filePath, objectName);
+      ListObjectsV2Result result = ossClient.listObjectsV2(bucketName, keyPrefix);
+      List<OSSObjectSummary> ossObjectSummaries = result.getObjectSummaries();
+      return ossObjectSummaries.stream().map(OSSObjectSummary::getKey).toList();
     } catch (Exception e) {
-      logger.error("Error occurred while uploading file: {}", objectName, e);
-    }
-  }
-
-  public void downloadFile(String objectName, String filePath) {
-    try {
-      ossClient.getObject(new GetObjectRequest(bucketName, objectName), new File(filePath));
-      logger.info("File downloaded: {} -> {}", objectName, filePath);
-    } catch (OSSException | ClientException e) {
-      logger.error("Error occurred while downloading file: {}", objectName, e);
+      logger.error("Error occurred while listing files: {}", keyPrefix, e);
+      return new ArrayList<String>();
     }
   }
 }

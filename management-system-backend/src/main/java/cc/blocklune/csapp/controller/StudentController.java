@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.net.URI;
+import java.util.List;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,7 +23,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @Tag(name = "student", description = "The operations for students")
 @RestController
-@RequestMapping("/api/student")
+@RequestMapping("/api/students")
 public class StudentController {
   private OssService ossService;
 
@@ -47,8 +48,10 @@ public class StudentController {
 
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     String studentId = authentication.getName();
+
     String[] objectNameParts = { "labs", labId.toString(), "solutions", studentId, file.getOriginalFilename() };
     String objectName = String.join("/", objectNameParts);
+
     try {
       ossService.uploadFile(objectName, file.getInputStream());
       URI location = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -59,13 +62,18 @@ public class StudentController {
     }
   }
 
-  @Operation(summary = "Download a list of solution files for a specific lab", responses = {
-      @ApiResponse(responseCode = "200", description = "The file has been downloaded successfully"),
-      @ApiResponse(responseCode = "401", description = "Unauthorized")
+  @Operation(summary = "Get a list of solution files for a specific lab", responses = {
+      @ApiResponse(responseCode = "200", description = "The list of files has been downloaded successfully"),
+      @ApiResponse(responseCode = "401", description = "Unauthorized"),
+      @ApiResponse(responseCode = "403", description = "Access denied. Maybe wrong role?")
   })
   @PreAuthorize("hasRole('STUDENT')")
   @GetMapping("/labs/{labId}/solutions")
-  public void downloadSolution(@PathVariable Long labId) {
+  public ResponseEntity<List<String>> downloadSolution(@PathVariable Long labId) {
+    String studentId = SecurityContextHolder.getContext().getAuthentication().getName();
+    String[] prefixKeys = { "labs", labId.toString(), "solutions", studentId };
+    String prefixKey = String.join("/", prefixKeys);
+    return ResponseEntity.ok(ossService.listFiles(prefixKey));
   }
 
   @Operation(summary = "Download a solution file for a specific lab", responses = {
