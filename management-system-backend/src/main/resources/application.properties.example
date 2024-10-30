@@ -8,3 +8,6 @@ spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 
 spring.security.user.name=
 spring.security.user.password=
+
+aliyun.oss.endpoint=
+aliyun.oss.bucket-name=
