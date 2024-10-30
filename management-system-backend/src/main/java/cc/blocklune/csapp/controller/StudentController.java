@@ -33,7 +33,8 @@ public class StudentController {
   @Operation(summary = "Upload a solution file for a specific lab", responses = {
       @ApiResponse(responseCode = "201", description = "The file has been uploaded successfully"),
       @ApiResponse(responseCode = "400", description = "Bad request"),
-      @ApiResponse(responseCode = "401", description = "Unauthorized")
+      @ApiResponse(responseCode = "401", description = "Unauthorized"),
+      @ApiResponse(responseCode = "403", description = "Access denied. Maybe wrong role?")
   })
   @PreAuthorize("hasRole('STUDENT')")
   @PostMapping(value = "/labs/{labId}/solutions", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -62,6 +63,7 @@ public class StudentController {
       @ApiResponse(responseCode = "200", description = "The file has been downloaded successfully"),
       @ApiResponse(responseCode = "401", description = "Unauthorized")
   })
+  @PreAuthorize("hasRole('STUDENT')")
   @GetMapping("/labs/{labId}/solutions")
   public void downloadSolution(@PathVariable Long labId) {
   }
@@ -70,6 +72,7 @@ public class StudentController {
       @ApiResponse(responseCode = "200", description = "The file has been downloaded successfully"),
       @ApiResponse(responseCode = "401", description = "Unauthorized")
   })
+  @PreAuthorize("hasRole('STUDENT')")
   @GetMapping("/labs/{labId}/solutions/{fileName}")
   public void downloadSolutionFile(@PathVariable Long labId, @PathVariable String fileName) {
   }
@@ -78,6 +81,7 @@ public class StudentController {
       @ApiResponse(responseCode = "200", description = "The file has been deleted successfully"),
       @ApiResponse(responseCode = "401", description = "Unauthorized")
   })
+  @PreAuthorize("hasRole('STUDENT')")
   @DeleteMapping("/labs/{labId}/solutions/{fileName}")
   public void deleteSolutionFile(@PathVariable Long labId, @PathVariable String fileName) {
   }
