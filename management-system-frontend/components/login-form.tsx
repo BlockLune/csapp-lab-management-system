@@ -1,8 +1,11 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { Card, Flex, Heading, Text, TextField, Button } from "@radix-ui/themes";
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import { login } from '@/scripts/api';
+import { getRouteFromRole } from '@/scripts/auth';
 
 const validationSchema = Yup.object().shape({
     username: Yup.string().required('Username is required'),
@@ -14,8 +17,13 @@ export default function LoginForm() {
         <Formik
             initialValues={{ username: '', password: '' }}
             validationSchema={validationSchema}
-            onSubmit={(values) => {
-                console.log(values);
+            onSubmit={async (values) => {
+                const data = await login(values.username, values.password);
+                if (data) {
+                    const router = useRouter();
+                    router.push(getRouteFromRole(data.role));
+                }
+                alert('Invalid username or password');
             }}
         >
             {({ handleSubmit }) => (

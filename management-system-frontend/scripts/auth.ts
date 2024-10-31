@@ -1,0 +1,50 @@
+export interface LoginResponse {
+    username: string;
+    role: "TEACHER" | "STUDENT";
+    token: string;
+}
+
+export interface Auth {
+    username: string;
+    role: "TEACHER" | "STUDENT";
+    token: string;
+    expiresAt: number; // ms
+}
+
+export function getAuth(): Auth | null {
+    const auth = localStorage.getItem("auth");
+    if (auth) {
+        if (JSON.parse(auth).expiresAt > Date.now()) {
+            return JSON.parse(auth);
+        }
+        removeAuth();
+    }
+    return null;
+}
+
+export function setAuth(data: LoginResponse) {
+    const tokenPayload = JSON.parse(atob(data.token.split('.')[1]));
+    const auth = {
+        username: data.username,
+        role: data.role,
+        token: data.token,
+        expiresAt: tokenPayload.exp * 1000, // unix timestamp in s to ms
+    };
+    localStorage.setItem("auth", JSON.stringify(auth));
+}
+
+export function removeAuth() {
+    localStorage.removeItem("auth");
+}
+
+
+export function getRouteFromRole(role: string) {
+    switch (role) {
+        case "TEACHER":
+            return '/teachers';
+        case "STUDENT":
+            return '/students';
+        default:
+            return '/';
+    }
+}
