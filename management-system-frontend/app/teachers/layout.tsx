@@ -1,5 +1,5 @@
 import SideBar from "@/components/side-bar";
-import { Heading, Button } from "@radix-ui/themes";
+import { Flex, Box, Button } from "@radix-ui/themes";
 
 export default function RootLayout({
   children,
@@ -7,16 +7,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="w-screen h-screen flex">
+    <Flex width="100vw" height="100vh">
       <SideBar>
-        <Heading>CSAPP Management System</Heading>
-        <Button variant="ghost">Manage Students</Button>
-        <Button variant="ghost">Manage Labs</Button>
+        <Flex direction="column" style={{ flex: 1 }} gap="2">
+          <Button variant="outline" style={{ cursor: "pointer" }}>Manage Students</Button>
+          <Button variant="outline" style={{ cursor: "pointer" }}>Manage Labs</Button>
+        </Flex>
       </SideBar>
-      <main className="flex-1 p-4 bg-gray-1 dark:bg-bluedark-1">
+      <Box as="div" flexGrow="1" flexShrink="1">
         {children}
-      </main>
-    </div>
+      </Box>
+    </Flex>
   );
 }
 

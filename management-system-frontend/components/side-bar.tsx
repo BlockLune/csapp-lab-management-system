@@ -1,17 +1,20 @@
+import { Flex, Heading, Text } from "@radix-ui/themes";
+
 export default function SideBar({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <aside
-      className="w-48 h-screen p-4 border-r
-                  flex flex-col gap-4
-                  bg-gray-3 border-gray-5
-                  dark:bg-bluedark-2 dark:border-bluedark-3"
-    >
-      {children}
-    </aside>
+    <Flex direction="column" p="6" justify="between">
+      <Flex direction="column" flexGrow="1" gap="6">
+        <Heading>CSAPP Management System</Heading>
+        {children}
+      </Flex>
+      <Text>
+        Built by BlockLune
+      </Text>
+    </Flex >
   );
 }
 
