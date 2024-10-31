@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
+import { Theme } from "@radix-ui/themes";
+
 import "./globals.css";
+import "@radix-ui/themes/styles.css";
 
 export const metadata: Metadata = {
   title: "CSAPP Management System",
@@ -14,9 +17,11 @@ export default function RootLayout({
   return (
     <html lang="zh-CN">
       <body>
-        <div className="w-screen h-screen">
-          {children}
-        </div>
+        <Theme>
+          <div className="w-screen h-screen">
+            {children}
+          </div>
+        </Theme>
       </body>
     </html>
   );
