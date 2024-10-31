@@ -53,7 +53,7 @@ public class TeacherController {
   })
   @PostMapping("/students")
   public ResponseEntity<String> AddStudent(@RequestBody AddOrUpdateStudentRequest request) {
-    systemUserService.addOrUpdateStudent(
+    systemUserService.addStudent(
         request.getStudentId(),
         request.getRawPassword());
     URI location = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -71,7 +71,7 @@ public class TeacherController {
   public ResponseEntity<String> updateStudent(
       @PathVariable String studentId,
       @RequestBody AddOrUpdateStudentRequest request) {
-    systemUserService.addOrUpdateStudent(
+    systemUserService.updateStudent(
         request.getStudentId(),
         request.getRawPassword());
     return ResponseEntity.ok("Student " + studentId + " updated!");

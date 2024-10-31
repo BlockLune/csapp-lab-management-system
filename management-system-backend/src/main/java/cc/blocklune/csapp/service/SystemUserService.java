@@ -29,16 +29,29 @@ public class SystemUserService {
         .orElse(false);
   }
 
-  public void addOrUpdateStudent(String username, String rawPassword) {
+  public void addStudent(String studentId, String rawPassword) {
     SystemUser student = new SystemUser();
-    student.setUsername(username);
+    student.setUsername(studentId);
     student.setPassword(passwordEncoder.encode(rawPassword));
     student.setRoles(Set.of("STUDENT"));
     systemUserRepository.save(student);
   }
 
-  public void deleteStudent(String username) {
-    systemUserRepository.findByUsername(username)
+  public void updateStudent(String studentId, String rawPassword) {
+    SystemUser student = systemUserRepository.findByUsername(studentId)
+        .orElseThrow(() -> new IllegalArgumentException("Student not found"));
+    if (rawPassword != null) {
+      return;
+    }
+    if (student.getRoles().contains("STUDENT")) {
+      throw new IllegalArgumentException("Cannot find a student with the given ID");
+    }
+    student.setPassword(passwordEncoder.encode(rawPassword));
+    systemUserRepository.save(student);
+  }
+
+  public void deleteStudent(String studentId) {
+    systemUserRepository.findByUsername(studentId)
         .ifPresent(systemUserRepository::delete);
   }
 
