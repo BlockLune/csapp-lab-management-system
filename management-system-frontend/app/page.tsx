@@ -17,8 +17,9 @@ export default function Home() {
 
 	return (
 		<Flex width="100vw" height="100vh" display="flex"
-			direction="column" justify="center" align="center" gap="8">
-			<Heading size="8">CSAPP Lab Management System</Heading>
+			direction="column" justify="center" align="center" gap="8"
+			className="heropattern"
+		>
 			<LoginForm />
 		</Flex>
 	);
