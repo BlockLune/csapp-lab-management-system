@@ -12,6 +12,7 @@
     "@radix-ui/themes": "^3.1.4",
     "axios": "^1.7.7",
     "formik": "^2.4.6",
+    "framer-motion": "^11.11.10",
     "next": "15.0.2",
     "react": "19.0.0-rc-02c0e824-20241028",
     "react-dom": "19.0.0-rc-02c0e824-20241028",
