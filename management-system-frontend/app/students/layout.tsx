@@ -10,8 +10,7 @@ export default function RootLayout({
     <div className="w-screen h-screen flex">
       <SideBar>
         <Heading>CSAPP Management System</Heading>
-        <Button variant="ghost">Manage Students</Button>
-        <Button variant="ghost">Manage Labs</Button>
+        <Button variant="ghost">Manage Solutions</Button>
       </SideBar>
       <main className="flex-1 p-4 bg-gray-1 dark:bg-bluedark-1">
         {children}
@@ -19,4 +18,3 @@ export default function RootLayout({
     </div>
   );
 }
-

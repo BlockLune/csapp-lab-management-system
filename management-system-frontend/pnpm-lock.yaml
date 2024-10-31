@@ -36,6 +36,9 @@ importers:
       tailwindcss:
         specifier: ^3.4.1
         version: 3.4.14
+      tailwindcss-radix-colors:
+        specifier: ^1.4.1
+        version: 1.4.1(tailwindcss@3.4.14)
       typescript:
         specifier: ^5
         version: 5.6.3
@@ -1360,6 +1363,11 @@ packages:
   supports-preserve-symlinks-flag@1.0.0:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
+
+  tailwindcss-radix-colors@1.4.1:
+    resolution: {integrity: sha512-jlSYXsjq8uavjQPXbMJJwDhojG0wlTasJTnM9hmXXPaDOvNUTeeU0YEILWakUpuxWJ8xyzyInz9JVZGHs3/dCw==}
+    peerDependencies:
+      tailwindcss: '>=3.0.0'
 
   tailwindcss@3.4.14:
     resolution: {integrity: sha512-IcSvOcTRcUtQQ7ILQL5quRDg7Xs93PdJEk1ZLbhhvJc7uj/OAhYOnruEiwnGgBvUtaUAJ8/mhSw1o8L2jCiENA==}
@@ -2724,6 +2732,11 @@ snapshots:
       ts-interface-checker: 0.1.13
 
   supports-preserve-symlinks-flag@1.0.0: {}
+
+  tailwindcss-radix-colors@1.4.1(tailwindcss@3.4.14):
+    dependencies:
+      '@radix-ui/colors': 3.0.0
+      tailwindcss: 3.4.14
 
   tailwindcss@3.4.14:
     dependencies:

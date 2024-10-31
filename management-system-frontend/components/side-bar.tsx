@@ -3,11 +3,15 @@ export default function SideBar({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-    return (
-        <aside className="w-48 h-screen p-4 bg-[#f8f9fe] dark:bg-[#151725]
-        border-r border-[#e0e1e6] dark:border-[#2f3135]
-        ">
-            {children}
-        </aside>
-    );
+  return (
+    <aside
+      className="w-48 h-screen p-4 border-r
+                  flex flex-col gap-4
+                  bg-gray-3 border-gray-5
+                  dark:bg-bluedark-2 dark:border-bluedark-3"
+    >
+      {children}
+    </aside>
+  );
 }
+
