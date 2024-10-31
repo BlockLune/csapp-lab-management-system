@@ -17,7 +17,9 @@ export default function RootLayout({
   return (
     <html lang="zh-CN">
       <body>
-        <Theme appearance="dark">{children}</Theme>
+        <Theme accentColor="jade" grayColor="sage">
+          {children}
+        </Theme>
       </body>
     </html>
   );

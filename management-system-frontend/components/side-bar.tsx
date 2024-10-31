@@ -6,7 +6,9 @@ export default function SideBar({
   children: React.ReactNode;
 }>) {
   return (
-    <Flex direction="column" p="6" justify="between">
+    <Flex direction="column" p="6" justify="between"
+      style={{ borderRight: "1px solid #e5e5e5" }}
+    >
       <Flex direction="column" flexGrow="1" gap="6">
         <Heading>CSAPP Management System</Heading>
         {children}

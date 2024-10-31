@@ -2,7 +2,7 @@ import { Card, Flex, Heading, Text, TextField, Button, Link } from "@radix-ui/th
 
 export default function LoginForm() {
     return (
-        <Card>
+        <Card variant="classic">
             <Flex gap="5" direction="column" align="start" p="4" width="24rem">
                 <Heading as="h2">Sign in</Heading>
                 <Flex direction="column" gap="3" width="100%">
