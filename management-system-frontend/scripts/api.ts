@@ -8,16 +8,17 @@ const axiosInstance = axios.create({
 export default axiosInstance;
 
 export async function login(username: string, password: string) {
-    const response = await axiosInstance.post('/auth/login', { username, password });
-    if (response.status === 200) {
-        setAuth(response.data);
-
-        axiosInstance.interceptors.request.use((config) => {
-            config.headers.Authorization = `Bearer ${response.data.token}`;
-            return config;
-        })
-
-        return response.data;
+    try {
+        const response = await axiosInstance.post('/auth/login', { username, password });
+        if (response.status === 200) {
+            setAuth(response.data);
+            axiosInstance.interceptors.request.use((config) => {
+                config.headers.Authorization = `Bearer ${response.data.token}`;
+                return config;
+            })
+            return response.data;
+        }
+    } catch (e) {
+        return null;
     }
-    return null;
 }

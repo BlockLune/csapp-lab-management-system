@@ -1,17 +1,17 @@
-'use client'
+'use client';
 
 import { useEffect } from 'react';
-import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation';
 import { Flex, Heading } from "@radix-ui/themes";
 import LoginForm from "@/components/login-form";
 import { getAuth, getRouteFromRole } from '@/scripts/auth';
 
 export default function Home() {
+	const router = useRouter();
 	useEffect(() => {
 		const auth = getAuth();
 		if (auth) {
-			const router = useRouter();
-			router.push(getRouteFromRole(auth.role));
+			router.push(getRouteFromRole(auth.roles));
 		}
 	}, []);
 

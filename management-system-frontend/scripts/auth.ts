@@ -1,12 +1,12 @@
 export interface LoginResponse {
     username: string;
-    role: "TEACHER" | "STUDENT";
+    roles: string[];
     token: string;
 }
 
 export interface Auth {
     username: string;
-    role: "TEACHER" | "STUDENT";
+    roles: string[];
     token: string;
     expiresAt: number; // ms
 }
@@ -26,7 +26,7 @@ export function setAuth(data: LoginResponse) {
     const tokenPayload = JSON.parse(atob(data.token.split('.')[1]));
     const auth = {
         username: data.username,
-        role: data.role,
+        roles: data.roles,
         token: data.token,
         expiresAt: tokenPayload.exp * 1000, // unix timestamp in s to ms
     };
@@ -38,13 +38,12 @@ export function removeAuth() {
 }
 
 
-export function getRouteFromRole(role: string) {
-    switch (role) {
-        case "TEACHER":
-            return '/teachers';
-        case "STUDENT":
-            return '/students';
-        default:
-            return '/';
+export function getRouteFromRole(roles: string[]) {
+    if (roles.includes("ROLE_TEACHER")) {
+        return "/teachers";
     }
+    if (roles.includes("ROLE_STUDENT")) {
+        return "/students";
+    }
+    return "/";
 }

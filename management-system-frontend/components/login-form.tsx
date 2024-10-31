@@ -13,6 +13,7 @@ const validationSchema = Yup.object().shape({
 });
 
 export default function LoginForm() {
+    const router = useRouter();
     return (
         <Formik
             initialValues={{ username: '', password: '' }}
@@ -20,10 +21,10 @@ export default function LoginForm() {
             onSubmit={async (values) => {
                 const data = await login(values.username, values.password);
                 if (data) {
-                    const router = useRouter();
-                    router.push(getRouteFromRole(data.role));
+                    router.push(getRouteFromRole(data.roles));
+                } else {
+                    alert('Invalid username or password');
                 }
-                alert('Invalid username or password');
             }}
         >
             {({ handleSubmit }) => (
