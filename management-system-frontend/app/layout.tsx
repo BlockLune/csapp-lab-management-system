@@ -18,9 +18,7 @@ export default function RootLayout({
     <html lang="zh-CN">
       <body>
         <Theme>
-          <div className="w-screen h-screen">
-            {children}
-          </div>
+          {children}
         </Theme>
       </body>
     </html>
