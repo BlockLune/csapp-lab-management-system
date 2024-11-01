@@ -31,7 +31,6 @@ public class PublicController {
 
   @Operation(summary = "Check the status of the service", responses = {
       @ApiResponse(responseCode = "200", description = "Service is running"),
-      @ApiResponse(responseCode = "401", description = "Unauthorized")
   })
   @GetMapping("/status")
   public ResponseEntity<String> checkStatus() {
@@ -40,7 +39,6 @@ public class PublicController {
 
   @Operation(summary = "Say hello", responses = {
       @ApiResponse(responseCode = "200", description = "Hello!"),
-      @ApiResponse(responseCode = "401", description = "Unauthorized")
   })
   @GetMapping("/public/hello")
   public ResponseEntity<String> hello() {
@@ -49,11 +47,23 @@ public class PublicController {
 
   @Operation(summary = "Get labs", responses = {
       @ApiResponse(responseCode = "200", description = "Get labs successfully"),
-      @ApiResponse(responseCode = "401", description = "Unauthorized")
   })
   @GetMapping("/public/labs")
   public ResponseEntity<List<LabInfo>> getLabs() {
     return ResponseEntity.ok(labInfoRepository.findAll());
+  }
+
+  @Operation(summary = "Get a specific lab", responses = {
+      @ApiResponse(responseCode = "200", description = "Get lab successfully"),
+      @ApiResponse(responseCode = "404", description = "Lab not found"),
+  })
+  @GetMapping("/public/labs/{labId}")
+  public ResponseEntity<LabInfo> getLab(@PathVariable Long labId) {
+    LabInfo labInfo = labInfoRepository.findById(labId).orElse(null);
+    if (labInfo == null) {
+      return ResponseEntity.notFound().build();
+    }
+    return ResponseEntity.ok(labInfo);
   }
 
   @Operation(summary = "Get materials of a specific lab", responses = {
