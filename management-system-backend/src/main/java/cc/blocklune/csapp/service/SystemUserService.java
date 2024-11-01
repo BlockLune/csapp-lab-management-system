@@ -40,10 +40,10 @@ public class SystemUserService {
   public void updateStudent(String studentId, String rawPassword) {
     SystemUser student = systemUserRepository.findByUsername(studentId)
         .orElseThrow(() -> new IllegalArgumentException("Student not found"));
-    if (rawPassword != null) {
+    if (rawPassword == null) {
       return;
     }
-    if (student.getRoles().contains("STUDENT")) {
+    if (!student.getRoles().contains("STUDENT")) {
       throw new IllegalArgumentException("Cannot find a student with the given ID");
     }
     student.setPassword(passwordEncoder.encode(rawPassword));
