@@ -31,3 +31,18 @@ export async function getStudentList() {
         return null;
     }
 }
+
+export interface LabInfo {
+    id: number;
+    name: string;
+    description: string;
+}
+
+export async function getLabList() {
+    try {
+        const response = await axiosInstance.get('/public/labs');
+        return response.data;
+    } catch (e) {
+        return null;
+    }
+}
