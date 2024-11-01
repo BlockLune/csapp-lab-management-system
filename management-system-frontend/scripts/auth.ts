@@ -14,8 +14,9 @@ export interface Auth {
 export function getAuth(): Auth | null {
     const auth = localStorage.getItem("auth");
     if (auth) {
-        if (JSON.parse(auth).expiresAt > Date.now()) {
-            return JSON.parse(auth);
+        const parsed = JSON.parse(auth);
+        if (parsed.expiresAt > Date.now()) {
+            return parsed;
         }
         removeAuth();
     }

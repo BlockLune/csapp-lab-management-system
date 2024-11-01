@@ -2,6 +2,7 @@
 
 import { Card, Flex, Button, Box } from "@radix-ui/themes";
 import SideBar from "@/components/side-bar";
+import Logout from "@/components/logout";
 import * as motion from "framer-motion/client";
 
 export default function RootLayout({
@@ -44,6 +45,7 @@ export default function RootLayout({
                   >
                     Manage Labs
                   </Button>
+                  <Logout />
                 </Flex>
               </SideBar>
               <Box p="6" style={{ flex: 1 }}>

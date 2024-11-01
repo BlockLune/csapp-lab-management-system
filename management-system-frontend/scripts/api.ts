@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { setAuth, getAuth } from './auth';
+import { setAuth, getAuth, removeAuth, getRouteFromRole } from './auth';
 
 const axiosInstance = axios.create({
     baseURL: 'http://localhost:8080/api',
@@ -28,6 +28,27 @@ export async function login(username: string, password: string) {
         }
     } catch (e) {
         return null;
+    }
+}
+
+export function logout() {
+    removeAuth();
+    axiosInstance.interceptors.request.use((config) => {
+        config.headers.Authorization = '';
+        return config;
+    });
+}
+
+export async function checkStatus(roles: string[]) {
+    const route = getRouteFromRole(roles);
+    try {
+        const response = await axiosInstance.get(`${route}/status`);
+        if (response.status === 200 && response.data === 'OK') {
+            return true;
+        }
+        return false;
+    } catch (e) {
+        return false;
     }
 }
 

@@ -162,4 +162,13 @@ public class TeacherController {
     InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
     return ResponseEntity.ok().headers(headers).body(inputStreamResource);
   }
+
+  @Operation(summary = "Check the status of the service", responses = {
+      @ApiResponse(responseCode = "200", description = "Service is running"),
+      @ApiResponse(responseCode = "401", description = "Unauthorized")
+  })
+  @GetMapping("/status")
+  public ResponseEntity<String> checkStatus() {
+    return ResponseEntity.ok("OK");
+  }
 }

@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "public", description = "Public APIs")
 @RestController
-@RequestMapping("/api/public")
+@RequestMapping("/api")
 public class PublicController {
   private OssService ossService;
   private LabInfoRepository labInfoRepository;
@@ -29,11 +29,20 @@ public class PublicController {
     this.labInfoRepository = labInfoRepository;
   }
 
+  @Operation(summary = "Check the status of the service", responses = {
+      @ApiResponse(responseCode = "200", description = "Service is running"),
+      @ApiResponse(responseCode = "401", description = "Unauthorized")
+  })
+  @GetMapping("/status")
+  public ResponseEntity<String> checkStatus() {
+    return ResponseEntity.ok("OK");
+  }
+
   @Operation(summary = "Say hello", responses = {
       @ApiResponse(responseCode = "200", description = "Hello!"),
       @ApiResponse(responseCode = "401", description = "Unauthorized")
   })
-  @GetMapping("/hello")
+  @GetMapping("/public/hello")
   public ResponseEntity<String> hello() {
     return ResponseEntity.ok("Hello from the CSAPP management system!");
   }
@@ -42,7 +51,7 @@ public class PublicController {
       @ApiResponse(responseCode = "200", description = "Get labs successfully"),
       @ApiResponse(responseCode = "401", description = "Unauthorized")
   })
-  @GetMapping("/labs")
+  @GetMapping("/public/labs")
   public ResponseEntity<List<LabInfo>> getLabs() {
     return ResponseEntity.ok(labInfoRepository.findAll());
   }
@@ -51,7 +60,7 @@ public class PublicController {
       @ApiResponse(responseCode = "200", description = "Get materials successfully"),
       @ApiResponse(responseCode = "401", description = "Unauthorized")
   })
-  @GetMapping("/labs/{labId}/materials")
+  @GetMapping("/public/labs/{labId}/materials")
   public ResponseEntity<List<String>> getMaterials(@PathVariable Long labId) {
     String[] prefixKeyParts = { "labs", labId.toString(), "materials" };
     String prefixKey = String.join("/", prefixKeyParts);
@@ -62,7 +71,7 @@ public class PublicController {
       @ApiResponse(responseCode = "200", description = "Get material file successfully"),
       @ApiResponse(responseCode = "401", description = "Unauthorized")
   })
-  @GetMapping("/labs/{labId}/materials/{fileName}")
+  @GetMapping("/public/labs/{labId}/materials/{fileName}")
   public ResponseEntity<InputStreamResource> getMaterialFile(
       @PathVariable Long labId,
       @PathVariable String fileName) {
