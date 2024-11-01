@@ -31,7 +31,7 @@ export default function ManageStudentsPage() {
       </Table.Header>
       <Table.Body>
         {
-          Array.from({ length: 7 }).map((_, i) => {
+          Array.from({ length: 6 }).map((_, i) => {
             return (
               <Table.Row key={i}>
                 <Table.RowHeaderCell justify="center"><Skeleton>BlockLune</Skeleton></Table.RowHeaderCell>
@@ -81,11 +81,16 @@ export default function ManageStudentsPage() {
 
   return (
     <Flex direction="column" gap="4" width="100%" height="100%">
-      <Heading as="h2" size="4">
-        Student Management Panel
-      </Heading>
+      <Flex direction="column" gap="2">
+        <Heading as="h2" size="4">
+          Student Management Panel
+        </Heading>
+        <Text>
+          Add students, update their passwords or remove them from the system.
+        </Text>
+      </Flex>
       <AddStudent />
-      <Flex justify="center" height="80%">
+      <Flex justify="center" height="70%">
         {
           fetching ? tableSkeleton : (students.length !== 0 ? tableComponent : fallbackComponent)
         }

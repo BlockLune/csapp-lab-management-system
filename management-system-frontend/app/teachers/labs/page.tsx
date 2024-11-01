@@ -95,7 +95,7 @@ export default function ManageLabsPage() {
           Lab Management Panel
         </Heading>
         <Text>
-          You can check the students' lab solutions here. Contact the admin if you want to add or remove labs.
+          You can check lab materials and students' solutions here. Contact the admin if you want to add or remove labs.
         </Text>
       </Flex>
       <Flex justify="center" height="80%">
