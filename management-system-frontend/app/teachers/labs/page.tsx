@@ -8,13 +8,20 @@ export default function ManageLabsPage() {
   const [fetching, setFetching] = useState<boolean>(true);
   const [labs, setLabs] = useState<LabInfo[]>([]);
 
+  const fetchStudents = async () => {
+    setFetching(true);
+    const students = await getLabList();
+    console.log(students);
+    if (students) {
+      setLabs(students);
+    } else {
+      setLabs([]);
+    }
+    setFetching(false);
+  }
+
   useEffect(() => {
-    // TODO: fetch real data
-    setTimeout(() => {
-      const DUMMY_DATA = Array.from({ length: 10 }, (_, i) => i + 1).map((i) => ({ id: i, name: `lab-${i}`, description: `description-${i}` }));
-      setLabs(DUMMY_DATA);
-      setFetching(false);
-    }, 1000);
+    fetchStudents();
   }, []);
 
   const tableSkeleton = (
