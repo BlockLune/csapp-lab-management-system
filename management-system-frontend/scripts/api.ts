@@ -1,11 +1,19 @@
 import axios from 'axios';
-import { setAuth } from './auth';
+import { setAuth, getAuth } from './auth';
 
 const axiosInstance = axios.create({
     baseURL: 'http://localhost:8080/api',
 });
 
 export default axiosInstance;
+
+axiosInstance.interceptors.request.use((config) => {
+    const auth = getAuth();
+    if (auth) {
+        config.headers.Authorization = `Bearer ${auth.token}`;
+    }
+    return config;
+})
 
 export async function login(username: string, password: string) {
     try {

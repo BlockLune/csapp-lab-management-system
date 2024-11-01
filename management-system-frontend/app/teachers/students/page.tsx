@@ -11,13 +11,20 @@ export default function ManageStudentsPage() {
   const [fetching, setFetching] = useState<boolean>(true);
   const [students, setStudents] = useState<string[]>([]);
 
+  const fetchStudents = async () => {
+    setFetching(true);
+    const students = await getStudentList();
+    console.log(students);
+    if (students) {
+      setStudents(students);
+    } else {
+      setStudents([]);
+    }
+    setFetching(false);
+  }
+
   useEffect(() => {
-    // TODO: fetch real data
-    setTimeout(() => {
-      const DUMMY_DATA = Array.from({ length: 10 }, (_, i) => `student-${i + 1}`);
-      setStudents(DUMMY_DATA);
-      setFetching(false);
-    }, 1000);
+    fetchStudents();
   }, []);
 
   const tableSkeleton = (
@@ -61,6 +68,7 @@ export default function ManageStudentsPage() {
               <Table.Row key={studentId}>
                 <Table.RowHeaderCell justify="center">{studentId}</Table.RowHeaderCell>
                 <Table.Cell justify="center">
+                  { /* TODO: refetch data */}
                   <UpdateStudent studentId={studentId} />
                 </Table.Cell>
                 <Table.Cell justify="center">
