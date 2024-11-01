@@ -13,6 +13,7 @@ export default function UpdateStudent({ studentId, onUpdate }: { studentId: stri
 
     async function handleUpdate() {
         await updateStudent(studentId, newPassword);
+        setNewPassword("");
         onUpdate();
     }
 

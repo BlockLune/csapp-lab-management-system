@@ -18,6 +18,8 @@ export default function AddStudent({ onAdd }: { onAdd: () => void }) {
 
     async function handleAdd() {
         await addStudent(studentId, rawPassword);
+        setStudentId("");
+        setRawPassword("");
         onAdd();
     }
 
