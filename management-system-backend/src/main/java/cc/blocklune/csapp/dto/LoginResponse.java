@@ -1,4 +1,4 @@
-package cc.blocklune.csapp.dto.auth;
+package cc.blocklune.csapp.dto;
 
 import java.util.Collection;
 import lombok.AllArgsConstructor;
