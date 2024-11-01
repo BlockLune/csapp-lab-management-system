@@ -48,7 +48,7 @@ export default function RootLayout({
                   </Button>
                 </Flex>
               </SideBar>
-              <Box p="6">
+              <Box p="6" style={{ flex: 1 }}>
                 {children}
               </Box>
             </Flex>

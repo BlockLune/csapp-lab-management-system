@@ -22,3 +22,12 @@ export async function login(username: string, password: string) {
         return null;
     }
 }
+
+export async function getStudentList() {
+    try {
+        const response = await axiosInstance.get('/teachers/students');
+        return response.data;
+    } catch (e) {
+        return null;
+    }
+}
