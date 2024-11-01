@@ -2,7 +2,6 @@
 
 import { Card, Flex, Button, Box } from "@radix-ui/themes";
 import SideBar from "@/components/side-bar";
-import { useRouter } from "next/navigation";
 import * as motion from "framer-motion/client";
 
 export default function RootLayout({
@@ -10,7 +9,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const router = useRouter();
   return (
     <Flex width="100vw" height="100vh"
       align="center" justify="center"
@@ -28,21 +26,21 @@ export default function RootLayout({
                   <Button
                     variant="outline"
                     style={{ cursor: "pointer" }}
-                    onClick={() => { router.push("/teachers") }}
+                    onClick={() => { window.location.href = "/teachers"; }}
                   >
                     Dashboard
                   </Button>
                   <Button
                     variant="outline"
                     style={{ cursor: "pointer" }}
-                    onClick={() => { router.push("/teachers/students") }}
+                    onClick={() => { window.location.href = "/teachers/students"; }}
                   >
                     Manage Students
                   </Button>
                   <Button
                     variant="outline"
                     style={{ cursor: "pointer" }}
-                    onClick={() => { router.push("/teachers/labs") }}
+                    onClick={() => { window.location.href = "/teachers/labs"; }}
                   >
                     Manage Labs
                   </Button>
