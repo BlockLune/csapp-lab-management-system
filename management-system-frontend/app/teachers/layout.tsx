@@ -4,12 +4,23 @@ import { Card, Flex, Button, Box } from "@radix-ui/themes";
 import SideBar from "@/components/side-bar";
 import Logout from "@/components/logout";
 import * as motion from "framer-motion/client";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { getAuth } from "@/scripts/auth";
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const router = useRouter();
+  useEffect(() => {
+    const auth = getAuth();
+    if (!auth || !auth.roles.includes("ROLE_TEACHER")) {
+      router.push("/")
+    }
+  }, []);
+
   return (
     <Flex width="100vw" height="100vh"
       align="center" justify="center"
