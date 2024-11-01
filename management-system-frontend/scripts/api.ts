@@ -34,9 +34,36 @@ export async function login(username: string, password: string) {
 export async function getStudentList() {
     try {
         const response = await axiosInstance.get('/teachers/students');
-        return response.data;
+        return response.data.sort();
     } catch (e) {
         return null;
+    }
+}
+
+export async function addStudent(studentId: string, rawPassword: string) {
+    try {
+        await axiosInstance.post('/teachers/students', { studentId, rawPassword });
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
+
+export async function removeStudent(studentId: string) {
+    try {
+        await axiosInstance.delete(`/teachers/students/${studentId}`);
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
+
+export async function updateStudent(studentId: string, rawPassword: string) {
+    try {
+        await axiosInstance.put(`/teachers/students/${studentId}`, { studentId, rawPassword });
+        return true;
+    } catch (e) {
+        return false;
     }
 }
 

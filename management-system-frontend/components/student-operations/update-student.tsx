@@ -1,6 +1,21 @@
-import { Dialog, Button, Flex, Text, TextField } from "@radix-ui/themes";
+'use client';
 
-export default function UpdateStudent({ studentId }: { studentId: string }) {
+import { Dialog, Button, Flex, Text, TextField } from "@radix-ui/themes";
+import { updateStudent } from "@/scripts/api";
+import { useState } from "react";
+
+export default function UpdateStudent({ studentId, onUpdate }: { studentId: string, onUpdate: () => void }) {
+    const [newPassword, setNewPassword] = useState<string>("");
+
+    function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+        setNewPassword(e.target.value);
+    }
+
+    async function handleUpdate() {
+        await updateStudent(studentId, newPassword);
+        onUpdate();
+    }
+
     return (
         <Dialog.Root>
             <Dialog.Trigger>
@@ -19,7 +34,10 @@ export default function UpdateStudent({ studentId }: { studentId: string }) {
                             New password for student {studentId}
                         </Text>
                         <TextField.Root
+                            type="password"
+                            value={newPassword}
                             placeholder="Enter password"
+                            onChange={(e) => handleChange(e)}
                         />
                     </label>
                 </Flex>
@@ -31,7 +49,12 @@ export default function UpdateStudent({ studentId }: { studentId: string }) {
                         </Button>
                     </Dialog.Close>
                     <Dialog.Close>
-                        <Button style={{ cursor: "pointer" }}>Update</Button>
+                        <Button 
+                            style={{ cursor: "pointer" }}
+                            onClick={handleUpdate}
+                        >
+                            Update
+                        </Button>
                     </Dialog.Close>
                 </Flex>
             </Dialog.Content>

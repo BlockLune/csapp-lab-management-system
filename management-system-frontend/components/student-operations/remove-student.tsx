@@ -1,6 +1,7 @@
 import { AlertDialog, Button, Flex } from "@radix-ui/themes";
+import { removeStudent } from "@/scripts/api";
 
-export default function RemoveStudent({ studentId }: { studentId: string }) {
+export default function RemoveStudent({ studentId, onRemove }: { studentId: string, onRemove: () => void }) {
     return (
         <AlertDialog.Root>
             <AlertDialog.Trigger>
@@ -19,7 +20,15 @@ export default function RemoveStudent({ studentId }: { studentId: string }) {
                         </Button>
                     </AlertDialog.Cancel>
                     <AlertDialog.Action>
-                        <Button variant="solid" color="red" style={{ cursor: "pointer" }}>
+                        <Button 
+                            variant="solid" 
+                            color="red" 
+                            style={{ cursor: "pointer" }}
+                            onClick={async () => {
+                                await removeStudent(studentId);
+                                onRemove();
+                            }}
+                        >
                             Remove
                         </Button>
                     </AlertDialog.Action>

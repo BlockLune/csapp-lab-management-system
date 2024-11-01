@@ -68,11 +68,10 @@ export default function ManageStudentsPage() {
               <Table.Row key={studentId}>
                 <Table.RowHeaderCell justify="center">{studentId}</Table.RowHeaderCell>
                 <Table.Cell justify="center">
-                  { /* TODO: refetch data */}
-                  <UpdateStudent studentId={studentId} />
+                  <UpdateStudent studentId={studentId} onUpdate={fetchStudents}/>
                 </Table.Cell>
                 <Table.Cell justify="center">
-                  <RemoveStudent studentId={studentId} />
+                  <RemoveStudent studentId={studentId} onRemove={fetchStudents}/>
                 </Table.Cell>
               </Table.Row>
             );
@@ -97,7 +96,7 @@ export default function ManageStudentsPage() {
           Add students, update their passwords or remove them from the system.
         </Text>
       </Flex>
-      <AddStudent />
+      <AddStudent onAdd={fetchStudents}/>
       <Flex justify="center" height="70%">
         {
           fetching ? tableSkeleton : (students.length !== 0 ? tableComponent : fallbackComponent)

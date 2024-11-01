@@ -1,6 +1,26 @@
-import { Dialog, Button, Flex, Text, TextField } from "@radix-ui/themes";
+'use client';
 
-export default function AddStudent() {
+import { Dialog, Button, Flex, Text, TextField } from "@radix-ui/themes";
+import { addStudent } from "@/scripts/api";
+import { useState } from "react";
+
+export default function AddStudent({ onAdd }: { onAdd: () => void }) {
+    const [studentId, setStudentId] = useState<string>("");
+    const [rawPassword, setRawPassword] = useState<string>("");
+
+    function handleStudentIdChange(e: React.ChangeEvent<HTMLInputElement>) {
+        setStudentId(e.target.value);
+    }
+
+    function handleRawPasswordChange(e: React.ChangeEvent<HTMLInputElement>) {
+        setRawPassword(e.target.value);
+    }
+
+    async function handleAdd() {
+        await addStudent(studentId, rawPassword);
+        onAdd();
+    }
+
     return (
         <Dialog.Root>
             <Dialog.Trigger>
@@ -19,7 +39,9 @@ export default function AddStudent() {
                             Student Id
                         </Text>
                         <TextField.Root
+                            value={studentId}
                             placeholder="Enter student id"
+                            onChange={handleStudentIdChange}
                         />
                     </label>
                     <label>
@@ -27,7 +49,10 @@ export default function AddStudent() {
                             Password
                         </Text>
                         <TextField.Root
+                            type="password"
+                            value={rawPassword}
                             placeholder="Enter password"
+                            onChange={handleRawPasswordChange}
                         />
                     </label>
                 </Flex>
@@ -39,7 +64,9 @@ export default function AddStudent() {
                         </Button>
                     </Dialog.Close>
                     <Dialog.Close>
-                        <Button style={{ cursor: "pointer" }}>Add</Button>
+                        <Button style={{ cursor: "pointer" }}
+                        onClick={handleAdd}
+                        >Add</Button>
                     </Dialog.Close>
                 </Flex>
             </Dialog.Content>
