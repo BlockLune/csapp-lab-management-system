@@ -22,15 +22,15 @@ public class DataInitializer implements CommandLineRunner {
   public void run(String... args) throws Exception {
     if (userRepository.count() == 0) {
       SystemUser teacher = new SystemUser();
-      teacher.setUsername("the-teacher");
-      teacher.setPassword(passwordEncoder.encode("the-teacher-password"));
+      teacher.setUsername("teacher");
+      teacher.setPassword(passwordEncoder.encode("teacher-password"));
       teacher.setRoles(Set.of("TEACHER"));
       userRepository.save(teacher);
 
-      for (int i = 0; i < 10; ++i) {
+      for (int i = 1; i <= 9; ++i) {
         SystemUser student = new SystemUser();
-        student.setUsername("student-" + i);
-        student.setPassword(passwordEncoder.encode("student-" + i + "-password"));
+        student.setUsername("B2204000" + i);
+        student.setPassword(passwordEncoder.encode("password"));
         student.setRoles(Set.of("STUDENT"));
         userRepository.save(student);
       }
@@ -45,8 +45,21 @@ public class DataInitializer implements CommandLineRunner {
 
       LabInfo lab2 = new LabInfo();
       lab2.setName("Bomb Lab");
-      lab2.setDescription("...");
+      lab2.setDescription(
+          "A binary bomb is a program provided to students as an object code file. When run, it prompts the user to type in 6 different strings. If any of these is incorrect, the bomb explodes, printing an error message and logging the event on a grading server. Students must defuse their own unique bomb by disassembling and reverse engineering the program to determine what the 6 strings should be. The lab teaches students to understand assembly language, and also forces them to learn how to use a debugger. It's also great fun. A legendary lab among the CMU undergrads.");
       labInfoRepository.save(lab2);
+
+      LabInfo lab3 = new LabInfo();
+      lab3.setName("Attack Lab");
+      lab3.setDescription(
+          "Students are given a pair of unique custom-generated x86-64 binary executables, called targets, that have buffer overflow bugs. One target is vulnerable to code injection attacks. The other is vulnerable to return-oriented programming attacks. Students are asked to modify the behavior of the targets by developing exploits based on either code injection or return-oriented programming. This lab teaches the students about the stack discipline and teaches them about the danger of writing code that is vulnerable to buffer overflow attacks.");
+      labInfoRepository.save(lab3);
+
+      LabInfo lab4 = new LabInfo();
+      lab4.setName("Architecture Lab");
+      lab4.setDescription(
+          "Students are given a small default Y86-64 array copying function and a working pipelined Y86-64 processor design that runs the copy function in some nominal number of clock cycles per array element (CPE). The students attempt to minimize the CPE by modifying both the function and the processor design. This gives the students a deep appreciation for the interactions between hardware and software.");
+      labInfoRepository.save(lab4);
     }
   }
 }
