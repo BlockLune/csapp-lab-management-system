@@ -14,7 +14,6 @@ export default function ManageStudentsPage() {
   const fetchStudents = async () => {
     setFetching(true);
     const students = await getStudentList();
-    console.log(students);
     if (students) {
       setStudents(students);
     } else {

@@ -11,7 +11,6 @@ export default function ManageLabsPage() {
   const fetchStudents = async () => {
     setFetching(true);
     const students = await getLabList();
-    console.log(students);
     if (students) {
       setLabs(students);
     } else {
