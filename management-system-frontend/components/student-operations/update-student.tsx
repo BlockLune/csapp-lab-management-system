@@ -19,6 +19,10 @@ export default function UpdateStudent({ studentId, onUpdate }: { studentId: stri
         onUpdate();
     }
 
+    function handleCancel() {
+        setNewPassword("");
+    }
+
     return (
         <Dialog.Root>
             <Dialog.Trigger>
@@ -53,7 +57,9 @@ export default function UpdateStudent({ studentId, onUpdate }: { studentId: stri
 
                 <Flex gap="3" mt="4" justify="end">
                     <Dialog.Close>
-                        <Button variant="soft" color="gray" style={{ cursor: "pointer" }}>
+                        <Button variant="soft" color="gray" style={{ cursor: "pointer" }}
+                            onClick={handleCancel}
+                        >
                             Cancel
                         </Button>
                     </Dialog.Close>

@@ -25,6 +25,11 @@ export default function AddStudent({ onAdd }: { onAdd: () => void }) {
         onAdd();
     }
 
+    function handleCancel() {
+        setStudentId("");
+        setRawPassword("");
+    }
+
     return (
         <Dialog.Root>
             <Dialog.Trigger>
@@ -69,7 +74,9 @@ export default function AddStudent({ onAdd }: { onAdd: () => void }) {
 
                 <Flex gap="3" mt="4" justify="end">
                     <Dialog.Close>
-                        <Button variant="soft" color="gray" style={{ cursor: "pointer" }}>
+                        <Button variant="soft" color="gray" style={{ cursor: "pointer" }}
+                            onClick={handleCancel}
+                        >
                             Cancel
                         </Button>
                     </Dialog.Close>
