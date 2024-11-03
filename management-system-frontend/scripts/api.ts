@@ -120,3 +120,14 @@ export async function getLabMaterials(labId: string){
         return null;
     }
 }
+
+export async function uploadMaterial(labId: string, file: File) {
+    try {
+        const formData = new FormData();
+        formData.append('file', file);
+        await axiosInstance.post(`/teachers/labs/${labId}/materials`, formData);
+        return true;
+    } catch (e) {
+        return false;
+    }
+}

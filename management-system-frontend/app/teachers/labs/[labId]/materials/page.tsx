@@ -4,6 +4,7 @@ import { useParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import { Flex, Table, Heading, Text, Skeleton, Button, Code } from "@radix-ui/themes";
 import { LabInfo, getLabInfo, getLabMaterials } from "@/scripts/api";
+import AddMaterial from "@/components/material-operations/add-material";
 
 export default function MaterialsPage() {
     const { labId } = useParams();
@@ -97,7 +98,7 @@ export default function MaterialsPage() {
                     Manage materials of Lab {labId} <Code>{labInfo?.name}</Code>
                 </Text>
             </Flex>
-            <Button style={{ cursor: "pointer" }}>Add Material</Button>
+            {labId && <AddMaterial labId={labId as string} onAdd={fetchLabInfo}/>}
             <Flex justify="center" height="70%">
                 {
                     fetching ? tableSkeleton : (materials.length !== 0 ? tableComponent : fallbackComponent)
