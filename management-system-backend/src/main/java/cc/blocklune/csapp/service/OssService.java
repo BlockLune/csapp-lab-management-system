@@ -65,7 +65,10 @@ public class OssService {
   public List<String> listFiles(String keyPrefix) {
     ListObjectsV2Result result = ossClient.listObjectsV2(bucketName, keyPrefix);
     List<OSSObjectSummary> ossObjectSummaries = result.getObjectSummaries();
-    return ossObjectSummaries.stream().map(OSSObjectSummary::getKey).toList();
+    return ossObjectSummaries.stream().map(OSSObjectSummary::getKey).map(key -> {
+      String[] parts = key.split("/");
+      return parts[parts.length - 1];
+    }).toList();
   }
 
   public void deleteFile(String objectName) {
