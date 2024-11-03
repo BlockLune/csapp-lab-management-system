@@ -3,7 +3,7 @@
 import { useParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import { Flex, Table, Heading, Text, Skeleton, Button, Code } from "@radix-ui/themes";
-import { LabInfo, getLabInfo } from "@/scripts/api";
+import { LabInfo, getLabInfo, getLabMaterials } from "@/scripts/api";
 
 export default function MaterialsPage() {
     const { labId } = useParams();
@@ -18,17 +18,15 @@ export default function MaterialsPage() {
         if (labInfo) {
             setLabInfo(labInfo);
         }
+        const materials = await getLabMaterials(labId as string);
+        if (materials) {
+            setMaterials(materials);
+        }
         setFetching(false);
     }
 
     useEffect(() => {
         fetchLabInfo();
-        // TODO: fetch real data
-        setTimeout(() => {
-            const DUMMY_DATA = Array.from({ length: 10 }, (_, i) => `material-${i + 1}`);
-            setMaterials(DUMMY_DATA);
-            setFetching(false);
-        }, 1000);
     }, []);
 
     const tableSkeleton = (

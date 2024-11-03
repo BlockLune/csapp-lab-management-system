@@ -111,3 +111,12 @@ export async function getLabInfo(labId: string): Promise<LabInfo | null> {
         return null;
     }
 }
+
+export async function getLabMaterials(labId: string){
+    try {
+        const response = await axiosInstance.get(`/public/labs/${labId}/materials`);
+        return response.data;
+    } catch (e) {
+        return null;
+    }
+}
