@@ -1,13 +1,28 @@
 'use client';
 
+import { useParams } from "next/navigation";
 import { useState, useEffect } from "react";
-import { Flex, Table, Heading, Text, Skeleton, Button } from "@radix-ui/themes";
+import { Flex, Table, Heading, Text, Skeleton, Button, Code } from "@radix-ui/themes";
+import { LabInfo, getLabInfo } from "@/scripts/api";
 
 export default function MaterialsPage() {
+    const { labId } = useParams();
+
     const [fetching, setFetching] = useState<boolean>(true);
     const [materials, setMaterials] = useState<string[]>([]);
+    const [labInfo, setLabInfo] = useState<LabInfo | null>(null);
+
+    async function fetchLabInfo() {
+        setFetching(true);
+        const labInfo = await getLabInfo(labId as string);
+        if (labInfo) {
+            setLabInfo(labInfo);
+        }
+        setFetching(false);
+    }
 
     useEffect(() => {
+        fetchLabInfo();
         // TODO: fetch real data
         setTimeout(() => {
             const DUMMY_DATA = Array.from({ length: 10 }, (_, i) => `material-${i + 1}`);
@@ -78,10 +93,10 @@ export default function MaterialsPage() {
         <Flex direction="column" gap="4" width="100%" height="100%">
             <Flex direction="column" gap="2">
                 <Heading as="h2" size="4">
-                    Materials of Lab (TODO: lab name)
+                    Materials of Lab {labId} <Code>{labInfo?.name}</Code>
                 </Heading>
                 <Text>
-                    Manage materials of the lab (TODO: lab name)
+                    Manage materials of Lab {labId} <Code>{labInfo?.name}</Code>
                 </Text>
             </Flex>
             <Button style={{ cursor: "pointer" }}>Add Material</Button>

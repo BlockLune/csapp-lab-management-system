@@ -94,9 +94,18 @@ export interface LabInfo {
     description: string;
 }
 
-export async function getLabList() {
+export async function getLabList(): Promise<LabInfo[] | null> {
     try {
         const response = await axiosInstance.get('/public/labs');
+        return response.data;
+    } catch (e) {
+        return null;
+    }
+}
+
+export async function getLabInfo(labId: string): Promise<LabInfo | null> {
+    try {
+        const response = await axiosInstance.get(`/public/labs/${labId}`);
         return response.data;
     } catch (e) {
         return null;
