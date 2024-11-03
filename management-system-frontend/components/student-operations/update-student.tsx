@@ -1,11 +1,13 @@
 'use client';
 
-import { Dialog, Button, Flex, Text, TextField } from "@radix-ui/themes";
+import { Dialog, Button, Flex, Text, TextField, IconButton } from "@radix-ui/themes";
+import { EyeOpenIcon, EyeClosedIcon } from "@radix-ui/react-icons";
 import { updateStudent } from "@/scripts/api";
 import { useState } from "react";
 
 export default function UpdateStudent({ studentId, onUpdate }: { studentId: string, onUpdate: () => void }) {
     const [newPassword, setNewPassword] = useState<string>("");
+    const [showPassword, setShowPassword] = useState(false);
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
         setNewPassword(e.target.value);
@@ -35,11 +37,17 @@ export default function UpdateStudent({ studentId, onUpdate }: { studentId: stri
                             New password for student {studentId}
                         </Text>
                         <TextField.Root
-                            type="password"
+                            type={showPassword ? 'text' : 'password'}
                             value={newPassword}
                             placeholder="Enter password"
                             onChange={(e) => handleChange(e)}
-                        />
+                        >
+                            <TextField.Slot side="right">
+                                <IconButton size="1" variant="ghost" onClick={() => setShowPassword((prev) => !prev)}>
+                                    {showPassword ? <EyeOpenIcon /> : <EyeClosedIcon />}
+                                </IconButton>
+                            </TextField.Slot>
+                        </TextField.Root>
                     </label>
                 </Flex>
 
@@ -50,7 +58,7 @@ export default function UpdateStudent({ studentId, onUpdate }: { studentId: stri
                         </Button>
                     </Dialog.Close>
                     <Dialog.Close>
-                        <Button 
+                        <Button
                             style={{ cursor: "pointer" }}
                             onClick={handleUpdate}
                         >

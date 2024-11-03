@@ -1,12 +1,14 @@
 'use client';
 
-import { Dialog, Button, Flex, Text, TextField } from "@radix-ui/themes";
+import { Dialog, Button, Flex, Text, TextField, IconButton } from "@radix-ui/themes";
+import { EyeOpenIcon, EyeClosedIcon } from "@radix-ui/react-icons";
 import { addStudent } from "@/scripts/api";
 import { useState } from "react";
 
 export default function AddStudent({ onAdd }: { onAdd: () => void }) {
     const [studentId, setStudentId] = useState<string>("");
     const [rawPassword, setRawPassword] = useState<string>("");
+    const [showPassword, setShowPassword] = useState(false);
 
     function handleStudentIdChange(e: React.ChangeEvent<HTMLInputElement>) {
         setStudentId(e.target.value);
@@ -51,11 +53,17 @@ export default function AddStudent({ onAdd }: { onAdd: () => void }) {
                             Password
                         </Text>
                         <TextField.Root
-                            type="password"
+                            type={showPassword ? 'text' : 'password'}
                             value={rawPassword}
                             placeholder="Enter password"
                             onChange={handleRawPasswordChange}
-                        />
+                        >
+                            <TextField.Slot side="right">
+                                <IconButton size="1" variant="ghost" onClick={() => setShowPassword((prev) => !prev)}>
+                                    {showPassword ? <EyeOpenIcon /> : <EyeClosedIcon />}
+                                </IconButton>
+                            </TextField.Slot>
+                        </TextField.Root>
                     </label>
                 </Flex>
 
@@ -67,7 +75,7 @@ export default function AddStudent({ onAdd }: { onAdd: () => void }) {
                     </Dialog.Close>
                     <Dialog.Close>
                         <Button style={{ cursor: "pointer" }}
-                        onClick={handleAdd}
+                            onClick={handleAdd}
                         >Add</Button>
                     </Dialog.Close>
                 </Flex>
