@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from 'next/navigation';
-import { Card, Flex, Heading, Text, TextField, Button } from "@radix-ui/themes";
+import { Card, Flex, Heading, Text, TextField, Button, IconButton } from "@radix-ui/themes";
+import { EyeOpenIcon, EyeClosedIcon } from "@radix-ui/react-icons";
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { login } from '@/scripts/api';
@@ -17,6 +18,7 @@ const validationSchema = Yup.object().shape({
 export default function LoginForm() {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
     return (
         <motion.div
             initial={{ opacity: 0 }}
@@ -57,7 +59,15 @@ export default function LoginForm() {
                                     </Flex>
                                     <Field name="password">
                                         {({ field }: { field: any }) => (
-                                            <TextField.Root id="password" type="password" {...field} placeholder="Enter your password" />
+                                            <TextField.Root id="password"
+                                                type={showPassword ? 'text' : 'password'}
+                                                {...field} placeholder="Enter your password" >
+                                                <TextField.Slot side="right">
+                                                    <IconButton size="1" variant="ghost" onClick={() => setShowPassword((prev) => !prev)}>
+                                                        {showPassword ? <EyeOpenIcon /> : <EyeClosedIcon />}
+                                                    </IconButton>
+                                                </TextField.Slot>
+                                            </TextField.Root>
                                         )}
                                     </Field>
                                 </Flex>
@@ -69,6 +79,6 @@ export default function LoginForm() {
                     </Form>
                 )}
             </Formik>
-        </motion.div>
+        </motion.div >
     );
 }
