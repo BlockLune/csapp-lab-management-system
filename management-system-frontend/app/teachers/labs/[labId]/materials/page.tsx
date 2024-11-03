@@ -6,6 +6,7 @@ import { Flex, Table, Heading, Text, Skeleton, Button, Code } from "@radix-ui/th
 import { LabInfo, getLabInfo, getLabMaterials } from "@/scripts/api";
 import AddMaterial from "@/components/material-operations/add-material";
 import RemoveMaterial from "@/components/material-operations/remove-material";
+import DownloadMaterial from "@/components/material-operations/download-material";
 
 export default function MaterialsPage() {
     const { labId } = useParams();
@@ -72,7 +73,7 @@ export default function MaterialsPage() {
                             <Table.Row key={fileName}>
                                 <Table.RowHeaderCell justify="center">{fileName}</Table.RowHeaderCell>
                                 <Table.Cell justify="center" align="center">
-                                    <Button variant="ghost">Download</Button>
+                                    <DownloadMaterial labId={labId as string} fileName={fileName}/>
                                 </Table.Cell>
                                 <Table.Cell justify="center" align="center">
                                     <RemoveMaterial labId={labId as string} fileName={fileName} onRemove={fetchLabInfo}/>

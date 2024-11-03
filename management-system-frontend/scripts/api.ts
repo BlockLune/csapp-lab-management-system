@@ -140,3 +140,26 @@ export async function removeMaterial(labId: string, fileName: string) {
         return false;
     }
 }
+
+export async function downloadMaterial(labId: string, fileName: string) {
+    try {
+        const response = await axiosInstance.get(`/public/labs/${labId}/materials/${fileName}`, { responseType: 'blob' });
+        if (response.status !== 200) {
+            throw new Error('Download failed');
+        }
+        const blob = new Blob([response.data]);
+
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
