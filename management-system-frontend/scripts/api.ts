@@ -52,7 +52,7 @@ export async function checkStatus(roles: string[]) {
     }
 }
 
-export async function getStudentList() {
+export async function getStudentList(): Promise<string[] | null> {
     try {
         const response = await axiosInstance.get('/teachers/students');
         return response.data.sort();
@@ -141,6 +141,17 @@ export async function removeMaterial(labId: string, fileName: string) {
     }
 }
 
+function triggerDownload(blob: Blob, fileName: string) {
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+}
+
 export async function downloadMaterial(labId: string, fileName: string) {
     try {
         const response = await axiosInstance.get(`/public/labs/${labId}/materials/${fileName}`, { responseType: 'blob' });
@@ -148,18 +159,55 @@ export async function downloadMaterial(labId: string, fileName: string) {
             throw new Error('Download failed');
         }
         const blob = new Blob([response.data]);
-
-        const url = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = fileName;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        window.URL.revokeObjectURL(url);
-
+        triggerDownload(blob, fileName);
         return true;
     } catch (e) {
         return false;
+    }
+}
+
+export async function downloadSolutionByTeacher(labId: string, studentId: string, fileName: string) {
+    try {
+        const response = await axiosInstance.get(`/teachers/labs/${labId}/solutions/${studentId}/${fileName}`, { responseType: 'blob' });
+        if (response.status !== 200) {
+            throw new Error('Download failed');
+        }
+        const blob = new Blob([response.data]);
+        triggerDownload(blob, fileName);
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
+
+export async function downloadSolutionByStudent(labId: string, fileName: string) {
+    try {
+        const response = await axiosInstance.get(`/students/labs/${labId}/solutions/${fileName}`, { responseType: 'blob' });
+        if (response.status !== 200) {
+            throw new Error('Download failed');
+        }
+        const blob = new Blob([response.data]);
+        triggerDownload(blob, fileName);
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
+
+export async function getLabSolutionsByTeacher(labId: string, studentId: string): Promise<string[] | null> {
+    try {
+        const response = await axiosInstance.get(`/teachers/labs/${labId}/solutions/${studentId}`);
+        return response.data;
+    } catch (e) {
+        return null;
+    }
+}
+
+export async function getLabSolutionsByStudent(labId: string): Promise<string[] | null> {
+    try {
+        const response = await axiosInstance.get(`/students/labs/${labId}/solutions`);
+        return response.data;
+    } catch (e) {
+        return null;
     }
 }
