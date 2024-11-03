@@ -131,3 +131,12 @@ export async function uploadMaterial(labId: string, file: File) {
         return false;
     }
 }
+
+export async function removeMaterial(labId: string, fileName: string) {
+    try {
+        await axiosInstance.delete(`/teachers/labs/${labId}/materials/${fileName}`);
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
