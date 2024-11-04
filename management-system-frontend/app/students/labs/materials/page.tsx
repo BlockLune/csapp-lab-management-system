@@ -19,6 +19,7 @@ export default function LabMaterials() {
     const labList = await getLabList();
     if (!labList || labList.length === 0) {
       setLabMaterials([]);
+      setFetching(false);
       return;
     }
 
