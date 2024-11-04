@@ -34,7 +34,7 @@ export default function SolutionsPage() {
           );
           return {
             studentId,
-            solutions: solutions || null
+            solutions: solutions || null,
           };
         })
       );
@@ -95,14 +95,17 @@ export default function SolutionsPage() {
       </Table.Header>
       <Table.Body>
         {students.map((student: StudentSolution) => {
-          const downloadButtons = (student.solutions && student.solutions.length > 0) ? student.solutions.map((solution) => (
-            <DownloadSolution
-              labId={labId as string}
-              studentId={student.studentId}
-              fileName={solution}
-            />
-          ))
-            : null;
+          const downloadButtons =
+            student.solutions && student.solutions.length > 0
+              ? student.solutions.map((solution) => (
+                  <DownloadSolution
+                    key={solution}
+                    labId={labId as string}
+                    studentId={student.studentId}
+                    fileName={solution}
+                  />
+                ))
+              : null;
           return (
             <Table.Row key={student.studentId}>
               <Table.RowHeaderCell justify="center">
@@ -134,8 +137,8 @@ export default function SolutionsPage() {
         {fetching
           ? tableSkeleton
           : students.length !== 0
-            ? tableComponent
-            : fallbackComponent}
+          ? tableComponent
+          : fallbackComponent}
       </Flex>
     </Flex>
   );
