@@ -47,7 +47,6 @@ export default function AddStudents({ onAdd }: { onAdd: () => void }) {
                         CSV
                     </Link>
                     {" "}
-                    <Link href="https://en.wikipedia.org/wiki/Comma-separated_values"></Link>
                     format, and click "Add" to add them to the system.
                 </Dialog.Description>
 
