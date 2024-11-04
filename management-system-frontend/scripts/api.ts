@@ -180,20 +180,6 @@ export async function downloadSolutionByTeacher(labId: string, studentId: string
     }
 }
 
-export async function downloadSolutionByStudent(labId: string, fileName: string) {
-    try {
-        const response = await axiosInstance.get(`/students/labs/${labId}/solutions/${fileName}`, { responseType: 'blob' });
-        if (response.status !== 200) {
-            throw new Error('Download failed');
-        }
-        const blob = new Blob([response.data]);
-        triggerDownload(blob, fileName);
-        return true;
-    } catch (e) {
-        return false;
-    }
-}
-
 export async function getLabSolutionsByTeacher(labId: string, studentId: string): Promise<string[] | null> {
     try {
         const response = await axiosInstance.get(`/teachers/labs/${labId}/solutions/${studentId}`);
@@ -209,5 +195,42 @@ export async function getLabSolutionsByStudent(labId: string): Promise<string[] 
         return response.data;
     } catch (e) {
         return null;
+    }
+}
+
+export async function uploadLabSolutionByStudent(labId: string, file: File) {
+    try {
+        const formData = new FormData();
+        formData.append('file', file);
+        await axiosInstance.post(`/students/labs/${labId}/solutions`, formData);
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
+
+export async function downloadSolutionByStudent(labId: string, fileName: string) {
+    try {
+        const response = await axiosInstance.get(`/students/labs/${labId}/solutions/${fileName}`, { responseType: 'blob' });
+        if (response.status !== 200) {
+            throw new Error('Download failed');
+        }
+        const blob = new Blob([response.data]);
+        triggerDownload(blob, fileName);
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
+
+export async function deleteSolutionByStudent(labId: string, fileName: string) {
+    try {
+        const response = await axiosInstance.delete(`/students/labs/${labId}/solutions/${fileName}`);
+        if (response.status !== 200) {
+            throw new Error(`Failed to delete ${fileName} of Lab ${labId}`);
+        }
+        return true;
+    } catch (e) {
+        return false;
     }
 }
