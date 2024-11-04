@@ -70,7 +70,7 @@ export default function ManageLabsPage() {
               <Table.Row key={lab.id}>
                 <Table.RowHeaderCell justify="center">{lab.id}</Table.RowHeaderCell>
                 <Table.Cell justify="center">{lab.name}</Table.Cell>
-                <Table.Cell justify="center">{lab.description}</Table.Cell>
+                <Table.Cell>{lab.description}</Table.Cell>
                 <Table.Cell justify="center">
                   <Link href={`/teachers/labs/${lab.id}/materials`}>
                     Manage
