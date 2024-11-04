@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { Flex, Table, Heading, Text, Skeleton } from "@radix-ui/themes";
-import AddStudent from "@/components/student-operations/add-student";
+import AddAStudent from "@/components/student-operations/add-a-student";
+import AddStudents from "@/components/student-operations/add-students";
 import UpdateStudent from "@/components/student-operations/update-student";
 import RemoveStudent from "@/components/student-operations/remove-student";
 import { getStudentList } from "@/scripts/api";
@@ -67,10 +68,10 @@ export default function ManageStudentsPage() {
               <Table.Row key={studentId}>
                 <Table.RowHeaderCell justify="center">{studentId}</Table.RowHeaderCell>
                 <Table.Cell justify="center">
-                  <UpdateStudent studentId={studentId} onUpdate={fetchStudents}/>
+                  <UpdateStudent studentId={studentId} onUpdate={fetchStudents} />
                 </Table.Cell>
                 <Table.Cell justify="center">
-                  <RemoveStudent studentId={studentId} onRemove={fetchStudents}/>
+                  <RemoveStudent studentId={studentId} onRemove={fetchStudents} />
                 </Table.Cell>
               </Table.Row>
             );
@@ -95,7 +96,10 @@ export default function ManageStudentsPage() {
           Add students, update their passwords or remove them from the system.
         </Text>
       </Flex>
-      <AddStudent onAdd={fetchStudents}/>
+      <Flex gap="2">
+        <AddAStudent onAdd={fetchStudents} />
+        <AddStudents onAdd={fetchStudents} />
+      </Flex>
       <Flex justify="center" height="70%">
         {
           fetching ? tableSkeleton : (students.length !== 0 ? tableComponent : fallbackComponent)

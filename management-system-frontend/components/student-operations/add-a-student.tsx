@@ -5,7 +5,7 @@ import { EyeOpenIcon, EyeClosedIcon } from "@radix-ui/react-icons";
 import { addStudent } from "@/scripts/api";
 import { useState } from "react";
 
-export default function AddStudent({ onAdd }: { onAdd: () => void }) {
+export default function AddAStudent({ onAdd }: { onAdd: () => void }) {
     const [studentId, setStudentId] = useState<string>("");
     const [rawPassword, setRawPassword] = useState<string>("");
     const [showPassword, setShowPassword] = useState(false);
@@ -33,13 +33,13 @@ export default function AddStudent({ onAdd }: { onAdd: () => void }) {
     return (
         <Dialog.Root>
             <Dialog.Trigger>
-                <Button style={{ cursor: "pointer" }}>Add Student</Button>
+                <Button style={{ cursor: "pointer", flex: 1 }}>Add A Student</Button>
             </Dialog.Trigger>
 
             <Dialog.Content maxWidth="450px">
-                <Dialog.Title>Add Student</Dialog.Title>
+                <Dialog.Title>Add A Student</Dialog.Title>
                 <Dialog.Description size="2" mb="4">
-                    Add a student to the system
+                    Add a student to the system.
                 </Dialog.Description>
 
                 <Flex direction="column" gap="3">
