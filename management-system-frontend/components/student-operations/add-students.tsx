@@ -1,5 +1,6 @@
 'use client';
 
+import { parse } from 'csv-parse/browser/esm/sync';
 import { Dialog, Button, Flex, Link, TextArea } from "@radix-ui/themes";
 import { addStudent } from "@/scripts/api";
 import { useState } from "react";
@@ -13,12 +14,18 @@ export default function AddStudents({ onAdd }: { onAdd: () => void }) {
     }
 
     async function handleAdd() {
-        // TODO
+        const records = parse(csv, {
+            columns: true,
+            skip_empty_lines: true
+        });
+        for (const record of records) {
+            await addStudent(record.student_id, record.password);
+        }
         onAdd();
     }
 
     function handleCancel() {
-        // TODO
+        setCsv("");
     }
 
     return (
