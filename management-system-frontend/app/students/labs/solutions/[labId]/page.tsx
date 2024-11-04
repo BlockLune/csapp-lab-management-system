@@ -5,6 +5,8 @@ import { useState, useEffect } from "react";
 import { Flex, Table, Heading, Text, Skeleton, Code } from "@radix-ui/themes";
 import { getLabInfo, getLabSolutionsByStudent, LabInfo } from "@/scripts/api";
 import UploadSolution from "@/components/solution-operations/upload-solution-by-student";
+import DownloadSolution from "@/components/solution-operations/download-solution-by-student";
+import DeleteSolution from "@/components/solution-operations/delete-solution-by-student";
 
 interface LabSolution extends LabInfo {
   solutions: string[] | null;
@@ -46,7 +48,10 @@ export default function LabSolutionPage() {
             File Name
           </Table.ColumnHeaderCell>
           <Table.ColumnHeaderCell justify="center">
-            Operations
+            Download
+          </Table.ColumnHeaderCell>
+          <Table.ColumnHeaderCell justify="center">
+            Delete
           </Table.ColumnHeaderCell>
         </Table.Row>
       </Table.Header>
@@ -57,6 +62,9 @@ export default function LabSolutionPage() {
               <Table.RowHeaderCell justify="center">
                 <Skeleton>BlockLune</Skeleton>
               </Table.RowHeaderCell>
+              <Table.Cell justify="center">
+                <Skeleton>BlockLune</Skeleton>
+              </Table.Cell>
               <Table.Cell justify="center">
                 <Skeleton>BlockLune</Skeleton>
               </Table.Cell>
@@ -75,7 +83,10 @@ export default function LabSolutionPage() {
             File Name
           </Table.ColumnHeaderCell>
           <Table.ColumnHeaderCell justify="center">
-            Operations
+            Download
+          </Table.ColumnHeaderCell>
+          <Table.ColumnHeaderCell justify="center">
+            Delete
           </Table.ColumnHeaderCell>
         </Table.Row>
       </Table.Header>
@@ -87,7 +98,16 @@ export default function LabSolutionPage() {
               <Table.RowHeaderCell justify="center">
                 {solution}
               </Table.RowHeaderCell>
-              <Table.Cell justify="center">TODO</Table.Cell>
+              <Table.Cell justify="center">
+                <DownloadSolution labId={labId as string} fileName={solution} />
+              </Table.Cell>
+              <Table.Cell justify="center">
+                <DeleteSolution
+                  labId={labId as string}
+                  fileName={solution}
+                  onDelete={fetchLabSolution}
+                />
+              </Table.Cell>
             </Table.Row>
           ))}
       </Table.Body>
