@@ -4,6 +4,7 @@ import { useParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import { Flex, Table, Heading, Text, Skeleton, Code } from "@radix-ui/themes";
 import { getLabInfo, getLabSolutionsByStudent, LabInfo } from "@/scripts/api";
+import UploadSolution from "@/components/solution-operations/upload-solution-by-student";
 
 interface LabSolution extends LabInfo {
   solutions: string[] | null;
@@ -104,6 +105,7 @@ export default function LabSolutionPage() {
         </Heading>
         <Text>Here are your solution files.</Text>
       </Flex>
+      <UploadSolution labId={labId as string} onAdd={fetchLabSolution} />
       <Flex justify="center" height="70%">
         {fetching
           ? tableSkeleton
