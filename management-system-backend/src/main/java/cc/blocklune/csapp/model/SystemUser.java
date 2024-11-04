@@ -30,7 +30,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "system_user")
+@Table(name = "my_system_user_table")
 @Schema(description = "A system user whose role can be a teacher or a student")
 public class SystemUser {
     @Id
@@ -48,7 +48,7 @@ public class SystemUser {
     private String password;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "role", joinColumns = @JoinColumn(name = "user_id"))
+    @CollectionTable(name = "my_role_table", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "role")
     @Schema(description = "The roles of the user")
     private Set<String> roles;

@@ -17,7 +17,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "lab_info")
+@Table(name = "my_lab_info_table")
 @Schema(description = "Lab info")
 public class LabInfo {
   @Id
