@@ -8,7 +8,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { getAuth } from "@/scripts/auth";
 
-export default function RootLayout({
+export default function TeachersLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
