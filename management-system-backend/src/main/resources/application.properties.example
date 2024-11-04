@@ -6,5 +6,8 @@ spring.datasource.username=
 spring.datasource.password=
 spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 
-aliyun.oss.endpoint=
-aliyun.oss.bucket-name=
+s3.endpoint=
+s3.bucket-name=
+s3.region=
+s3.access-key-id=
+s3.secret-access-key=

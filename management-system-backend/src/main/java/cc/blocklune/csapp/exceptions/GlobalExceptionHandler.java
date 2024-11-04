@@ -1,6 +1,5 @@
 package cc.blocklune.csapp.exceptions;
 
-import com.aliyun.oss.OSSException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -10,6 +9,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
+import software.amazon.awssdk.services.s3.model.S3Exception;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -41,9 +41,9 @@ public class GlobalExceptionHandler {
     return ResponseEntity.notFound().build();
   }
 
-  @ExceptionHandler(OSSException.class)
-  public ResponseEntity<String> handleOssException(OSSException ex) {
-    if (ex.getErrorCode().equals("NoSuchKey")) {
+  @ExceptionHandler(S3Exception.class)
+  public ResponseEntity<String> handleS3Exception(S3Exception ex) {
+    if (ex.statusCode() == 404) {
       return ResponseEntity.notFound().build();
     }
     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
