@@ -21,6 +21,7 @@ export default function AddStudents({ onAdd }: { onAdd: () => void }) {
         for (const record of records) {
             await addStudent(record.student_id, record.password);
         }
+        setCsv("");
         onAdd();
     }
 
