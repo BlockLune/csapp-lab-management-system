@@ -4,12 +4,12 @@ This is a management system designed for NJUPT labs, built with Spring.
 
 ## Configuration
 
-1. MySQL database (`application.properties`)
-2. Aliyun OSS (`application.properties`, Environment Variables)
+1. PostgreSQL
+2. Any S3-Compatible Service
 
 ## Development Notes
 
-- File structure in OSS:
+- File structure in S3-Compatible Service:
 
 ```text
 labs/
