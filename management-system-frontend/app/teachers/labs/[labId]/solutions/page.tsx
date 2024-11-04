@@ -44,7 +44,6 @@ export default function SolutionsPage() {
       console.error("Error fetching students and solutions:", error);
       setStudents([]);
     } finally {
-      console.log(students);
       setFetching(false);
     }
   };
