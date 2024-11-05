@@ -2,28 +2,32 @@
 
 generate_random_string() {
     length=$1
-    tr -dc 'A-Za-z0-9!@#$%^&*()_+' < /dev/urandom | head -c $length
+    openssl rand -base64 48 | tr -dc 'A-Za-z0-9!@#$%^&*()_+' | head -c "$length"
 }
 
 generate_username() {
     length=$1
-    tr -dc 'a-z0-9' < /dev/urandom | head -c $length
+    openssl rand -base64 32 | tr -dc 'a-z0-9' | head -c "$length"
 }
 
+if ! command -v openssl &> /dev/null; then
+    echo "Error: OpenSSL is not installed. Please install OpenSSL first."
+    exit 1
+fi
+
+echo "Generating secure credentials using OpenSSL..."
+
 cat > .env << EOF
-# PostgreSQL Configuration
 CSAPP_LAB_MANAGEMENT_SYSTEM_POSTGRES_DB=csapp_lab_management_system
 CSAPP_LAB_MANAGEMENT_SYSTEM_POSTGRES_USER=$(generate_username 8)
 CSAPP_LAB_MANAGEMENT_SYSTEM_POSTGRES_PASSWORD=$(generate_random_string 32)
 
-# MinIO Configuration
 CSAPP_LAB_MANAGEMENT_SYSTEM_MINIO_ROOT_USER=$(generate_username 8)
 CSAPP_LAB_MANAGEMENT_SYSTEM_MINIO_ROOT_PASSWORD=$(generate_random_string 32)
 CSAPP_LAB_MANAGEMENT_SYSTEM_MINIO_ACCESS_KEY_ID=$(generate_random_string 20)
 CSAPP_LAB_MANAGEMENT_SYSTEM_MINIO_SECRET_ACCESS_KEY=$(generate_random_string 32)
 CSAPP_LAB_MANAGEMENT_SYSTEM_MINIO_BUCKET_NAME=csapp-lab-management-system
 
-# Initial Teacher Account Configuration
 CSAPP_LAB_MANAGEMENT_SYSTEM_INIT_TEACHER_USERNAME=teacher
 CSAPP_LAB_MANAGEMENT_SYSTEM_INIT_TEACHER_PASSWORD=$(generate_random_string 16)
 EOF
