@@ -5,6 +5,7 @@ import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.S3Configuration;
 import software.amazon.awssdk.services.s3.model.*;
 import software.amazon.awssdk.core.ResponseInputStream;
 import software.amazon.awssdk.core.sync.RequestBody;
@@ -47,10 +48,15 @@ public class OssService {
 
     AwsBasicCredentials awsCredentials = AwsBasicCredentials.create(accessKeyId, secretAccessKey);
 
+    S3Configuration s3Configuration = S3Configuration.builder()
+        .pathStyleAccessEnabled(true) // Use path-style access for compatibility with MinIO
+        .build();
+
     s3Client = S3Client.builder()
         .endpointOverride(URI.create(endpoint))
         .region(Region.of(region))
         .credentialsProvider(StaticCredentialsProvider.create(awsCredentials))
+        .serviceConfiguration(s3Configuration)
         .build();
 
     logger.info("S3Client initialized with endpoint: {} and bucket: {}", endpoint, bucketName);
@@ -65,6 +71,7 @@ public class OssService {
   }
 
   public void uploadFile(String objectName, InputStream inputStream) throws Exception {
+    logger.info("Uploading file: {}", objectName);
     s3Client.putObject(PutObjectRequest.builder()
         .bucket(bucketName)
         .key(objectName)
@@ -73,6 +80,7 @@ public class OssService {
   }
 
   public InputStream downloadFile(String objectName) {
+    logger.info("Downloading file: {}", objectName);
     ResponseInputStream<GetObjectResponse> response = s3Client.getObject(GetObjectRequest.builder()
         .bucket(bucketName)
         .key(objectName)
@@ -81,6 +89,7 @@ public class OssService {
   }
 
   public List<String> listFiles(String keyPrefix) {
+    logger.info("Listing files with prefix: {}", keyPrefix);
     ListObjectsV2Response response = s3Client.listObjectsV2(ListObjectsV2Request.builder()
         .bucket(bucketName)
         .prefix(keyPrefix)
@@ -96,6 +105,7 @@ public class OssService {
   }
 
   public void deleteFile(String objectName) {
+    logger.info("Deleting file: {}", objectName);
     s3Client.deleteObject(DeleteObjectRequest.builder()
         .bucket(bucketName)
         .key(objectName)
