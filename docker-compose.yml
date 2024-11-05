@@ -14,7 +14,7 @@ services:
     ports:
       - "5432:5432"
     networks:
-      - csapp-lab-management-system-network
+      - app-network
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${CSAPP_LAB_MANAGEMENT_SYSTEM_POSTGRES_USER}"]
       interval: 10s
@@ -36,7 +36,7 @@ services:
       - "9000:9000"
       - "9001:9001"
     networks:
-      - csapp-lab-management-system-network
+      - app-network
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
       interval: 10s
@@ -58,7 +58,7 @@ services:
     env_file:
       - .env
     networks:
-      - csapp-lab-management-system-network
+      - app-network
     entrypoint: >
       /usr/bin/env sh -c '
       sleep 10 &&
@@ -88,7 +88,7 @@ services:
     ports:
       - "8080:8080"
     networks:
-      - csapp-lab-management-system-network
+      - app-network
     restart: unless-stopped
 
 volumes:
@@ -96,5 +96,5 @@ volumes:
   minio-data:
 
 networks:
-  csapp-lab-management-system-network:
+  app-network:
     driver: bridge
