@@ -59,14 +59,12 @@ services:
       - .env
     networks:
       - csapp-lab-management-system-network
-    command: >
-      /bin/sh -c '
-        echo "Waiting for MinIO to be ready..."
-        sleep 10;
-        mc alias set myminio http://minio:9000 "$${MINIO_ROOT_USER}" "$${MINIO_ROOT_PASSWORD}";
-        mc mb "myminio/$${MINIO_BUCKET_NAME}" || true;
-        mc admin user add myminio "$${MINIO_ACCESS_KEY_ID}" "$${MINIO_SECRET_ACCESS_KEY}" || true;
-        mc admin policy attach myminio readwrite --user "$${MINIO_ACCESS_KEY_ID}" || true;
+    entrypoint: >
+      /usr/bin/env sh -c '
+      sleep 10 &&
+      mc alias set myminio http://minio:9000 "$${MINIO_ROOT_USER}" "$${MINIO_ROOT_PASSWORD}" &&
+      mc mb "myminio/$${MINIO_BUCKET_NAME}" &&
+      mc admin accesskey create myminio/ --access-key "$${MINIO_ACCESS_KEY_ID}" --secret-key "$${MINIO_SECRET_ACCESS_KEY}"
       '
   
   backend:
