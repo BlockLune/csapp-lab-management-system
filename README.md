@@ -1,6 +1,8 @@
-# Management System Backend
+# CSAPP Lab Management System
 
-This is a management system designed for NJUPT labs, built with Spring.
+This is a lab management system, built with Spring & NextJS.
+
+This is a hands-on project from NJUPT's practice week.
 
 ## Configuration
 
