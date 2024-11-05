@@ -4,6 +4,7 @@ import cc.blocklune.csapp.model.LabInfo;
 import cc.blocklune.csapp.model.SystemUser;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -18,22 +19,20 @@ public class DataInitializer implements CommandLineRunner {
   @Autowired
   private PasswordEncoder passwordEncoder;
 
+  @Value("${init.teacher.username}")
+  private String initTeacherUsername;
+
+  @Value("${init.teacher.password}")
+  private String initTeacherPassword;
+
   @Override
   public void run(String... args) throws Exception {
     if (userRepository.count() == 0) {
       SystemUser teacher = new SystemUser();
-      teacher.setUsername("teacher");
-      teacher.setPassword(passwordEncoder.encode("teacher-password"));
+      teacher.setUsername(initTeacherUsername);
+      teacher.setPassword(passwordEncoder.encode(initTeacherPassword));
       teacher.setRoles(Set.of("TEACHER"));
       userRepository.save(teacher);
-
-      for (int i = 1; i <= 9; ++i) {
-        SystemUser student = new SystemUser();
-        student.setUsername("B2204000" + i);
-        student.setPassword(passwordEncoder.encode("password"));
-        student.setRoles(Set.of("STUDENT"));
-        userRepository.save(student);
-      }
     }
 
     if (labInfoRepository.count() == 0) {

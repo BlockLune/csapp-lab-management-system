@@ -42,3 +42,7 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+tasks.named("bootBuildImage") {
+	imageName = "blocklune/csapp-lab-management-system-api:${project.version}"
+}
