@@ -69,6 +69,19 @@ curl -fsSL https://raw.githubusercontent.com/BlockLune/csapp-lab-management-syst
 
 The frontend is a standard NextJS project. Check out the [NextJS documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more information.
 
+## Util Scripts
+
+In NJUPT, students need to use the system to view lab information and submit lab solutions, but they also need to ssh to the school server to do their labs. So, here comes a script for quick batch creation of student accounts in this system and in the server. All you need to do is make sure that a file named `students.csv` exists in your current directory and run the following script (see the comments within the script for more details):
+
+```bash
+sudo python add_students.py
+```
+
+Notice: The CSV file should contain columns:
+
+- student_id: Student's ID that will be used as both this system's username and Unix username
+- password: Student's password that will be set for both this system's and Unix account
+
 ## Development Notes
 
 - File structure in S3-Compatible Service:
