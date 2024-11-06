@@ -8,52 +8,66 @@ I built the backend, a RESTful API service, using Spring Boot. The API is protec
 
 I built the frontend with NextJS. I use the Radix UI library to build components, Formik to handle forms, and Framer Motion for some animations.
 
-## Configuration
+## Deployment
 
-As mentioned above, the system uses PostgreSQL and an S3-compatible service. The design gives the system a high degree of flexibility.
+### Backend
 
-If you want to test locally, you can use Docker to start these services.
+As mentioned above, the system uses PostgreSQL and an S3-compatible service. The design gives the system a high degree of flexibility. If you want to use your own services, please check out and modify the environment variables in the `.env' file of the backend project.
 
-### PostgreSQL
+I also provide a `docker-compose.yml` file to deploy the system completely locally. It will start a local PostgreSQL server and a MinIO server. Here are the steps:
 
-Create the container with the command below. Here I use `password` as the password of the default user `postgres`:
+Before you start, make sure you have Docker installed on your machine. See the Docker [documentation](https://docs.docker.com/engine/install/) for installation instructions.
 
-```bash
-docker run --rm --name postgres-server -e POSTGRES_PASSWORD=password -p 5432:5432 -d postgres
-```
-
-A database named with `csapp_db` is required. You can use the following command to create it:
+Create a directory for the backend project and run the following command to download the `docker-compose.yml` file:
 
 ```bash
-psql -U postgres --host=localhost --port=5432
+curl -fsSL https://raw.githubusercontent.com/BlockLune/csapp-lab-management-system/refs/heads/main/docker-compose.yml
 ```
 
-```sql
-CREATE DATABASE csapp_db;
+In the same directory, create an `.env` file with the following content
+
+```text
+CSAPP_LAB_MANAGEMENT_SYSTEM_POSTGRES_DB=
+CSAPP_LAB_MANAGEMENT_SYSTEM_POSTGRES_USER=
+CSAPP_LAB_MANAGEMENT_SYSTEM_POSTGRES_PASSWORD=
+
+CSAPP_LAB_MANAGEMENT_SYSTEM_MINIO_ROOT_USER=
+CSAPP_LAB_MANAGEMENT_SYSTEM_MINIO_ROOT_PASSWORD=
+CSAPP_LAB_MANAGEMENT_SYSTEM_MINIO_ACCESS_KEY_ID=
+CSAPP_LAB_MANAGEMENT_SYSTEM_MINIO_SECRET_ACCESS_KEY=
+CSAPP_LAB_MANAGEMENT_SYSTEM_MINIO_BUCKET_NAME=
+
+CSAPP_LAB_MANAGEMENT_SYSTEM_INIT_TEACHER_USERNAME=
+CSAPP_LAB_MANAGEMENT_SYSTEM_INIT_TEACHER_PASSWORD=
 ```
 
-### S3-Compatible Service
-
-The command below starts a MinIO server, which is an open-source S3-compatible service:
+And then run the following command to start
 
 ```bash
-docker run --rm --name minio-server -p 9000:9000 -p 9001:9001 quay.io/minio/minio server /data --console-address ":9001"
+docker-compose up -d
 ```
 
-Open the console at `http://localhost:9001`. The default username and password should be both `minioadmin`. Create a bucket named `csapp-management-system-bucket`, and generate the key pair (access key id & secret access key).
+As you can see, there are a lot of credentials to fill in the `.env` file. I provide a script to generate these credentials. Run the following command to download the script:
 
-Then check out the `.env.exmaple`. Set the environment variables list there.
-
-```env
-export CSAPP_MANAGEMENT_SYSTEM_DB_URL=jdbc:postgresql://localhost:5432/csapp_db
-export CSAPP_MANAGEMENT_SYSTEM_DB_USERNAME=postgres
-export CSAPP_MANAGEMENT_SYSTEM_DB_PASSWORD=password
-export CSAPP_MANAGEMENT_SYSTEM_S3_ENDPOINT=http://127.0.0.1:9000
-export CSAPP_MANAGEMENT_SYSTEM_S3_BUCKET_NAME=csapp-management-system-bucket
-export CSAPP_MANAGEMENT_SYSTEM_S3_REGION=auto
-export CSAPP_MANAGEMENT_SYSTEM_S3_ACCESS_KEY_ID=
-export CSAPP_MANAGEMENT_SYSTEM_S3_SECRET_ACCESS_KEY=
+```bash
+curl -fsSL https://raw.githubusercontent.com/BlockLune/csapp-lab-management-system/refs/heads/main/deploy.sh
 ```
+
+I also provide a script to start the services:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/BlockLune/csapp-lab-management-system/refs/heads/main/start.sh
+```
+
+And to stop the services:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/BlockLune/csapp-lab-management-system/refs/heads/main/stop.sh
+```
+
+### Frontend
+
+The frontend is a standard NextJS project. Check out the [NextJS documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more information.
 
 ## Development Notes
 
@@ -71,3 +85,4 @@ labs/
 
 - Error / exception handling are done in the `GlobalExceptionHandler`.
 - Basically the `deleteFile` interface of the OSS service always returns 200 (OK), since if the file exists, it will be deleted, and if it doesn't exist, it is some kind of "deleted".
+- MinIO needs path-style access.
