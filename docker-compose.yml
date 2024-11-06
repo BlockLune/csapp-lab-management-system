@@ -89,6 +89,16 @@ services:
       - app-network
     restart: unless-stopped
 
+  frontend:
+    image: blocklune/csapp-lab-management-system
+    depends_on:
+      - backend
+    ports:
+      - "3000:3000"
+    networks:
+      - app-network
+    restart: unless-stopped
+
 volumes:
   postgres-data:
   minio-data:
