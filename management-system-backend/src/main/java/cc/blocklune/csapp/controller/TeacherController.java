@@ -3,6 +3,8 @@ package cc.blocklune.csapp.controller;
 import cc.blocklune.csapp.dto.AddOrUpdateStudentRequest;
 import cc.blocklune.csapp.service.OssService;
 import cc.blocklune.csapp.service.SystemUserService;
+import cc.blocklune.csapp.service.UnixAccountService;
+import cc.blocklune.csapp.exceptions.UnixAccountException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -25,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.http.HttpStatus;
 
 @Tag(name = "teacher", description = "The operations for teachers")
 @RestController
@@ -32,10 +35,13 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 public class TeacherController {
   private final SystemUserService systemUserService;
   private OssService ossService;
+  private final UnixAccountService unixAccountService;
 
-  public TeacherController(SystemUserService systemUserService, OssService ossService) {
+  public TeacherController(SystemUserService systemUserService, OssService ossService,
+      UnixAccountService unixAccountService) {
     this.systemUserService = systemUserService;
     this.ossService = ossService;
+    this.unixAccountService = unixAccountService;
   }
 
   @Operation(summary = "Get a list of students's names", responses = {
@@ -61,6 +67,30 @@ public class TeacherController {
         .buildAndExpand(request.getStudentId())
         .toUri();
     return ResponseEntity.created(location).build();
+  }
+
+  @Operation(summary = "Add a unix account for the student", responses = {
+      @ApiResponse(responseCode = "201", description = "Add successfully"),
+      @ApiResponse(responseCode = "401", description = "Unauthorized"),
+      @ApiResponse(responseCode = "500", description = "Internal server error")
+  })
+  @PostMapping("/students/unix")
+  public ResponseEntity<String> AddUnixStudent(@RequestBody AddOrUpdateStudentRequest request) {
+    try {
+      String username = request.getStudentId();
+      String password = request.getRawPassword();
+
+      if (username.isEmpty() || password.isEmpty()) {
+        return ResponseEntity.badRequest().body("Username and password cannot be empty");
+      }
+
+      unixAccountService.createUnixAccount(username, password);
+      return ResponseEntity.status(HttpStatus.CREATED)
+          .body("Unix account created successfully");
+    } catch (UnixAccountException e) {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+          .body("Failed to create Unix account: " + e.getMessage());
+    }
   }
 
   @Operation(summary = "Update a student", responses = {
