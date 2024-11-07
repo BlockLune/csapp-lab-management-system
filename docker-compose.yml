@@ -14,12 +14,16 @@ services:
     networks:
       - app-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${CSAPP_LAB_MANAGEMENT_SYSTEM_POSTGRES_USER}"]
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${CSAPP_LAB_MANAGEMENT_SYSTEM_POSTGRES_USER}",
+        ]
       interval: 10s
       timeout: 5s
       retries: 5
     restart: unless-stopped
-  
+
   minio:
     image: quay.io/minio/minio
     command: server /data --console-address ":9001"
@@ -64,9 +68,9 @@ services:
       mc mb "myminio/$${MINIO_BUCKET_NAME}" &&
       mc admin accesskey create myminio/ --access-key "$${MINIO_ACCESS_KEY_ID}" --secret-key "$${MINIO_SECRET_ACCESS_KEY}"
       '
-  
+
   backend:
-    image: blocklune/csapp-lab-management-system-api
+    image: blocklune/csapp-lab-management-system-api:latest
     environment:
       - CSAPP_LAB_MANAGEMENT_SYSTEM_POSTGRES_URL=jdbc:postgresql://postgres:5432/${CSAPP_LAB_MANAGEMENT_SYSTEM_POSTGRES_DB}
       - CSAPP_LAB_MANAGEMENT_SYSTEM_POSTGRES_USERNAME=${CSAPP_LAB_MANAGEMENT_SYSTEM_POSTGRES_USER}
@@ -90,7 +94,7 @@ services:
     restart: unless-stopped
 
   frontend:
-    image: blocklune/csapp-lab-management-system
+    image: blocklune/csapp-lab-management-system:latest
     depends_on:
       - backend
     ports:

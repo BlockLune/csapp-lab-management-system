@@ -64,6 +64,7 @@ export async function getStudentList(): Promise<string[] | null> {
 export async function addStudent(studentId: string, rawPassword: string) {
     try {
         await axiosInstance.post('/teachers/students', { studentId, rawPassword });
+        await axiosInstance.post('/teachers/students/unix', { studentId, rawPassword });
         return true;
     } catch (e) {
         return false;

@@ -10,7 +10,7 @@ import java.lang.InterruptedException;
 
 @Service
 public class UnixAccountService {
-  private static final Logger logger = LoggerFactory.getLogger(OssService.class);
+  private static final Logger logger = LoggerFactory.getLogger(UnixAccountService.class);
 
   public void createUnixAccount(String username, String password) throws UnixAccountException {
     try {
@@ -25,6 +25,8 @@ public class UnixAccountService {
       int exitCode = process.waitFor();
 
       if (exitCode != 0) {
+        logger.error("Failed to create user account, exit code: {}", exitCode);
+        logger.error("The command is: {}", String.join(" ", createUserCommand));
         throw new UnixAccountException("Failed to create user account");
       }
 
@@ -41,6 +43,7 @@ public class UnixAccountService {
 
       if (exitCode != 0) {
         Runtime.getRuntime().exec(new String[] { "userdel", "-r", username });
+        logger.error("Failed to set password");
         throw new UnixAccountException("Failed to set password");
       }
 
