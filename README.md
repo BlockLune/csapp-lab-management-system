@@ -2,6 +2,15 @@
 
 This is a hands-on project from NJUPT's practice week. During this week I built a lab management system using Spring & NextJS.
 
+## Preview
+
+![login-page](./img/login-page.webp)
+![student-dashboard](./img/student-dashboard.webp)
+![student-solution](./img/student-solution.webp)
+![teacher-dashboard](./img/teacher-dashboard.webp)
+![teacher-lab](./img/teacher-lab.webp)
+![teacher-student](./img/teacher-student.webp)
+
 ## Architecture
 
 I built the backend, a RESTful API service, using Spring Boot. The API is protected with Spring Security and uses basic authentication and JWT. I use PostgreSQL as the database where I store information about labs, system users and their roles (teacher, student). The system uses an S3-compatible service to store lab materials and student solutions.
