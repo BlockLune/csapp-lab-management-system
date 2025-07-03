@@ -36,7 +36,7 @@ Before you start, make sure you have Docker installed on your machine. See the [
 Create a directory for the project and run the following command to download the `docker-compose.yml` file:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/BlockLune/csapp-lab-management-system/refs/heads/main/docker-compose.yml
+curl -fsSLO https://raw.githubusercontent.com/BlockLune/csapp-lab-management-system/refs/heads/main/docker-compose.yml
 ```
 
 In the same directory, create an `.env` file with the following content:
@@ -59,25 +59,25 @@ CSAPP_LAB_MANAGEMENT_SYSTEM_INIT_TEACHER_PASSWORD=
 And then run the following command to start:
 
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
 
 As you can see, there are a lot of credentials to fill in the `.env` file. I provide a script named `deploy.sh` to generate these credentials. Run the following command to download the script:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/BlockLune/csapp-lab-management-system/refs/heads/main/deploy.sh
+curl -fsSLO https://raw.githubusercontent.com/BlockLune/csapp-lab-management-system/refs/heads/main/deploy.sh
 ```
 
 I also provide a script named `start.sh` to start the services:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/BlockLune/csapp-lab-management-system/refs/heads/main/start.sh
+curl -fsSLO https://raw.githubusercontent.com/BlockLune/csapp-lab-management-system/refs/heads/main/start.sh
 ```
 
 And a script named `stop.sh` to stop the services:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/BlockLune/csapp-lab-management-system/refs/heads/main/stop.sh
+curl -fsSLO https://raw.githubusercontent.com/BlockLune/csapp-lab-management-system/refs/heads/main/stop.sh
 ```
 
 ## Util Scripts
