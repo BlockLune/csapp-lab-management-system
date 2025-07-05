@@ -2,14 +2,9 @@
 
 This is a hands-on project from NJUPT's practice week. During this week I built a lab management system using Spring & NextJS.
 
-## Preview
+![Student Dashboard](./docs/images/student-dashboard.webp)
 
-![login-page](./img/login-page.webp)
-![student-dashboard](./img/student-dashboard.webp)
-![student-solution](./img/student-solution.webp)
-![teacher-dashboard](./img/teacher-dashboard.webp)
-![teacher-lab](./img/teacher-lab.webp)
-![teacher-student](./img/teacher-student.webp)
+[(Click here to see the gallery)](./docs/gallery.md)
 
 ## Architecture
 
@@ -110,3 +105,17 @@ labs/
 - Error / exception handling are done in the `GlobalExceptionHandler`.
 - Basically the `deleteFile` interface of the OSS service always returns 200 (OK), since if the file exists, it will be deleted, and if it doesn't exist, it is some kind of "deleted".
 - MinIO needs path-style access.
+
+## Other Resources
+
+Here are two documents from another of my curriculum labs (Software Engineering), which describe the requirements and design of this system. Some parts of the design are not implemented in this project, but they can be used as a reference for future improvements.
+
+- [Software Requirements Specification](./docs/software-requirements-specification.md)
+- [Software Design Specification](./docs/software-design-specification.md)
+
+These documents are written in Chinese, with the help of my teammates:
+
+- [@KorNeh](https://github.com/KorNeh)
+- [@SJMAHAHA](https://github.com/SJMAHAHA)
+- [@haozihuilaile](https://github.com/haozihuilaile)
+- [@shandian233](https://github.com/shandian233)
